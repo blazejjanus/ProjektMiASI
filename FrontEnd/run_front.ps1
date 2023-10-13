@@ -1,0 +1,1 @@
+ng serve --host 192.168.0.64 --proxy-config proxy.conf.json --ssl --ssl-key .\.ssl\lan.key --ssl-cert .\.ssl\lan.crt

@@ -1,0 +1,349 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>API</name>
+    </assembly>
+    <members>
+        <member name="T:API.Controllers.CarManagementController">
+            <summary>
+            Car management controller
+            </summary>
+        </member>
+        <member name="M:API.Controllers.CarManagementController.#ctor(Services.Interfaces.ILoggingService,Services.Interfaces.ICarManagementService,Services.Interfaces.IAuthenticationService)">
+            <summary>
+            CarManagementController constructor
+            </summary>
+            <param name="loggingService"></param>
+            <param name="carManagementService"></param>
+            <param name="authenticationService"></param>
+        </member>
+        <member name="M:API.Controllers.CarManagementController.GetCarByID(System.Int32)">
+            <summary>
+            Get car by ID
+            </summary>
+            <param name="ID">Car ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.CarManagementController.GetCarByRegistrationNumber(System.String)">
+            <summary>
+            Get car by registration number
+            </summary>
+            <param name="registrationNumber">Car's registration number</param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.CarManagementController.GetAllCars(System.Boolean,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Get all cars (only admin or employee)
+            </summary>
+            <param name="includeUnoperational">[false] shall the result include unoperational cars</param>
+            <param name="count">[Optional] number of records to take</param>
+            <param name="startIndex">[Optional] starting record</param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.CarManagementController.AddCar(Services.DTO.CarDTO,System.String)">
+            <summary>
+            Add car (only admin or employee)
+            </summary>
+            <param name="car"></param>
+            <param name="jwt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.CarManagementController.UpdateCar(Services.DTO.CarDTO,System.String)">
+            <summary>
+            Update car (only admin or employee)
+            </summary>
+            <param name="car"></param>
+            <param name="jwt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.CarManagementController.DeleteCar(System.Int32,System.String,System.Boolean)">
+            <summary>
+            Delete car (only admin or employee)
+            </summary>
+            <param name="ID"></param>
+            <param name="jwt"></param>
+            <param name="deleteHard">[false] true - completely remove from DB, false - mark entity as deleted</param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.CarManagementController.IsCarOrdered(System.Int32,System.String)">
+            <summary>
+            Check if car is ordered (only admin or employee)
+            </summary>
+            <param name="ID"></param>
+            <param name="jwt"></param>
+            <returns></returns>
+        </member>
+        <member name="T:API.Controllers.ImageController">
+            <summary>
+            Image controller
+            </summary>
+        </member>
+        <member name="M:API.Controllers.ImageController.#ctor(Services.Interfaces.ILoggingService,Services.Interfaces.IImageService,Services.Interfaces.IAuthenticationService)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="loggingService"></param>
+            <param name="imageService"></param>
+            <param name="authenticationService"></param>
+        </member>
+        <member name="M:API.Controllers.ImageController.GetCarMainImage(System.Int32)">
+            <summary>
+            Get main image of a car
+            </summary>
+            <param name="CarID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.ImageController.GetCarImages(System.Int32)">
+            <summary>
+            Get all images of a car
+            </summary>
+            <param name="CarID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.ImageController.AddCarImage(System.Int32,Microsoft.AspNetCore.Http.IFormFile,System.String,System.Nullable{System.Boolean})">
+            <summary>
+            Add car iamge (only admin or employee)
+            </summary>
+            <param name="CarID"></param>
+            <param name="file">Base64 encoded image content</param>
+            <param name="jwt"></param>
+            <param name="isMain">[Optional] If the image is car's main image. Default null - if car has no images it will be main, true - main, false - not main</param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.ImageController.DeleteImage(System.Int32,System.String)">
+            <summary>
+            Delete car image (only admin or employee)
+            </summary>
+            <param name="ImageID"></param>
+            <param name="jwt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.ImageController.EditImage(System.Int32,System.String,System.String)">
+            <summary>
+            Edit car image (only admin or employee)
+            </summary>
+            <param name="ImageID"></param>
+            <param name="imageContent">Base64 encoded image</param>
+            <param name="jwt"></param>
+            <returns></returns>
+        </member>
+        <member name="T:API.Controllers.LoginController">
+            <summary>
+            Login controller
+            </summary>
+        </member>
+        <member name="M:API.Controllers.LoginController.#ctor(Services.Interfaces.ILoggingService,Services.Interfaces.ILoginService)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="loggingService"></param>
+            <param name="loginService"></param>
+        </member>
+        <member name="M:API.Controllers.LoginController.Login(System.String,System.String)">
+            <summary>
+            Login method
+            </summary>
+            <param name="email"></param>
+            <param name="password"></param>
+            <returns>User's token</returns>
+        </member>
+        <member name="M:API.Controllers.LoginController.Register(Services.DTO.UserDTO)">
+            <summary>
+            Register method
+            </summary>
+            <param name="user"></param>
+            <returns>User's token</returns>
+        </member>
+        <member name="T:API.Controllers.OrdersController">
+            <summary>
+            Orders controller
+            </summary>
+        </member>
+        <member name="M:API.Controllers.OrdersController.#ctor(Services.Interfaces.ILoggingService,Services.Interfaces.IOrderService,Services.Interfaces.IAuthenticationService)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="loggingService"></param>
+            <param name="orderService"></param>
+            <param name="authenticationService"></param>
+        </member>
+        <member name="M:API.Controllers.OrdersController.GetOrderByID(System.Int32,System.String)">
+            <summary>
+            Get order by ID
+            </summary>
+            <param name="ID"></param>
+            <param name="jwt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.OrdersController.GetAllOrders(System.String,System.Nullable{Shared.Enums.OrderStates})">
+            <summary>
+            Get all orders (only admin or employee)
+            </summary>
+            <param name="jwt"></param>
+            <param name="orderState"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.OrdersController.GetUserOrders(System.Int32,System.String)">
+            <summary>
+            Get user's orders (only for this user's token or higher type user's token)
+            </summary>
+            <param name="userID"></param>
+            <param name="jwt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.OrdersController.GetUserOrders(System.String,System.String)">
+            <summary>
+            Get user's orders (only for this user's token or higher type user's token)
+            </summary>
+            <param name="email"></param>
+            <param name="jwt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.OrdersController.GetCarOrders(System.Int32,System.String)">
+            <summary>
+            Get car's orders (only admin or employee)
+            </summary>
+            <param name="carID"></param>
+            <param name="jwt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.OrdersController.GetCarOrders(System.String,System.String)">
+            <summary>
+            Get car's orders (only admin or employee)
+            </summary>
+            <param name="registrationNumber"></param>
+            <param name="jwt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.OrdersController.AddOrder(Services.DTO.OrderDTO,System.String)">
+            <summary>
+            Add order (only for customer or higher type user's token)
+            </summary>
+            <param name="order"></param>
+            <param name="jwt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.OrdersController.UpdateOrder(Services.DTO.OrderDTO,System.String)">
+            <summary>
+            Update order (only for customer or higher type user's token)
+            </summary>
+            <param name="order"></param>
+            <param name="jwt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.OrdersController.CancelOrder(System.Int32,System.String)">
+            <summary>
+            Cancel order (only for customer or higher type user's token)
+            </summary>
+            <param name="orderID"></param>
+            <param name="jwt"></param>
+            <returns></returns>
+            <exception cref="T:System.InvalidCastException"></exception>
+        </member>
+        <member name="T:API.Controllers.UserController">
+            <summary>
+            User controller
+            </summary>
+        </member>
+        <member name="M:API.Controllers.UserController.#ctor(Services.Interfaces.ILoggingService,Services.Interfaces.IUserService,Services.Interfaces.IAuthenticationService)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="loggingService"></param>
+            <param name="userService"></param>
+            <param name="authenticationService"></param>
+        </member>
+        <member name="M:API.Controllers.UserController.GetUserByID(System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get user by ID
+            </summary>
+            <param name="ID"></param>
+            <param name="jwt"></param>
+            <param name="includeDeleted">[false] Include users marked as deleted.</param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.UserController.GetUserByEmail(System.String,System.String,System.Boolean)">
+            <summary>
+            Get user by email
+            </summary>
+            <param name="Email"></param>
+            <param name="jwt"></param>
+            <param name="includeDeleted">[false] Include users marked as deleted.</param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.UserController.GetAllUsers(System.String,System.Boolean)">
+            <summary>
+            Get all users (only admin or employee)
+            </summary>
+            <param name="jwt"></param>
+            <param name="includeDeleted">[false] Include users marked as deleted.</param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.UserController.AddUser(Services.DTO.UserDTO,System.String)">
+            <summary>
+            Add user (only admin or employee)
+            </summary>
+            <param name="user"></param>
+            <param name="jwt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.UserController.UpdateUser(Services.DTO.UserDTO,System.String)">
+            <summary>
+            Update user (only admin or employee)
+            </summary>
+            <param name="user"></param>
+            <param name="jwt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.UserController.DeleteUserByID(System.Int32,System.String,System.Boolean)">
+            <summary>
+            Delete user (only admin or employee)
+            </summary>
+            <param name="ID"></param>
+            <param name="jwt"></param>
+            <param name="deleteHard">[false] true - completely remove from DB, false - mark entity as deleted</param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.UserController.DeleteUserByEmail(System.String,System.String,System.Boolean)">
+            <summary>
+            Delete user (only admin or employee)
+            </summary>
+            <param name="email"></param>
+            <param name="jwt"></param>
+            <param name="deleteHard">[false] true - completely remove from DB, false - mark entity as deleted</param>
+            <returns></returns>
+        </member>
+        <member name="T:API.Program">
+            <summary>
+            Main ASP.NET App class
+            </summary>
+        </member>
+        <member name="M:API.Program.Main(System.String[])">
+            <summary>
+            Main method
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="T:API.ResultTranslation">
+            <summary>
+            Class used for translating services results and logging it
+            </summary>
+        </member>
+        <member name="M:API.ResultTranslation.#ctor(Services.Interfaces.ILoggingService)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="loggingService"></param>
+        </member>
+        <member name="M:API.ResultTranslation.Pass(Microsoft.AspNetCore.Mvc.IActionResult,System.String,System.String,System.String)">
+            <summary>
+            Pass services IActionResult result and log it
+            </summary>
+            <param name="result">IActionResult result from service</param>
+            <param name="controller">Controller's name</param>
+            <param name="method">Method's name</param>
+            <param name="message">[Optional] Additional logging message</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

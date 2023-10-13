@@ -1,0 +1,28 @@
+<div style="text-align: center;">
+    <mat-form-field class="example-full-width">
+        <mat-label>Wybierz początkową datę rezerwacji</mat-label>
+        <input [(ngModel)]="startDate" [min]="now" matInput [matDatepickerFilter]="filterDates"
+            [matDatepicker]="pickerStart">
+        <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+        <mat-datepicker #pickerStart></mat-datepicker>
+    </mat-form-field>
+    <br>
+    <br>
+    <mat-form-field class="example-full-width">
+        <mat-label>Wybierz końcową datę</mat-label>
+        <input [(ngModel)]="endDate" [min]="now" matInput [matDatepickerFilter]="filterDates"
+            [matDatepicker]="pickerEnd">
+        <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+        <mat-datepicker #pickerEnd></mat-datepicker>
+    </mat-form-field>
+    <br>
+    <br>
+    <br>
+    <div>
+        <span> Cena za <span *ngIf="checkIfDateIsValid()">podany przedział czasu: </span><span
+                *ngIf="!checkIfDateIsValid()"> dobę </span> {{calculatePrice()}}zł </span><br><br>
+        <span *ngIf="isNotloggedIn">Dane dotyczące rezerwacji dostępne są tylko dla zalogowanych
+            użytkowników</span><br><br>
+        <button mat-button (click)="rent()">Zarezerwuj</button>
+    </div>
+</div>

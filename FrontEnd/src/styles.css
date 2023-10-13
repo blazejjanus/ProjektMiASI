@@ -1,0 +1,36 @@
+* {}
+
+html,
+body {
+    overflow-x: hidden;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.center {
+    text-align: center;
+}
+
+.center_margin {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+a {
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
+.snackbar-red {
+    background-color: red;
+    color: white;
+}
+
+.snackbar-green {
+    background-color: green;
+    color: white;
+}

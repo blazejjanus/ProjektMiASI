@@ -1,0 +1,210 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <mat-card>
+                <mat-card-content>
+                    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center"
+                        style="margin-left: auto; margin-right:auto">
+                        <mat-tab>
+                            <ng-template mat-tab-label>Informacje ogólne</ng-template>
+                            <br>
+                            <br>
+                            <div class="container">
+                                <form class="example-form">
+                                    <div class="row">
+                                        <div class="col-12 d-flex justify-content-center">
+                                            <mat-card class="margins">
+                                                <mat-card-content>
+                                                    <mat-form-field class="example-full-width">
+                                                        <mat-label>Email</mat-label>
+                                                        <input type="email" matInput [(ngModel)]="editedUser.email"
+                                                            [formControl]="inputsFormControl.emailFormControl"
+                                                            [errorStateMatcher]="matcher" [value]="'username'"
+                                                            placeholder="Jarosław.Kaczynski@gmail.com">
+                                                        <mat-error
+                                                            *ngIf="inputsFormControl.emailFormControl.hasError('minlength') || inputsFormControl.emailFormControl.hasError('maxlength')">
+                                                            Wprowadź poprawny adres email
+                                                        </mat-error>
+                                                        <mat-error
+                                                            *ngIf="inputsFormControl.emailFormControl.hasError('required')">
+                                                            Email jest <strong>wymagany</strong>
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                    <br>
+                                                    <br>
+                                                    <mat-form-field class="example-full-width">
+                                                        <mat-label>Hasło</mat-label>
+                                                        <input type="password" matInput
+                                                            [formControl]="inputsFormControl.passwordFormControl"
+                                                            [errorStateMatcher]="matcher" placeholder="********">
+                                                        <mat-error
+                                                            *ngIf="inputsFormControl.passwordFormControl.hasError('required')">
+                                                            Proszę uzupełnić hasło
+                                                        </mat-error>
+                                                        <mat-error
+                                                            *ngIf="inputsFormControl.passwordFormControl.hasError('minlength') || inputsFormControl.passwordFormControl.hasError('maxlength')">
+                                                            Hasło musi składać się z <strong>co najmniej</strong> 8
+                                                            znaków, a
+                                                            <strong>
+                                                                maksymalnie
+                                                            </strong>z 32
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                    <br>
+                                                    <br>
+                                                    <mat-form-field class="example-full-width">
+                                                        <mat-label>Imie</mat-label>
+                                                        <input type="text" matInput [(ngModel)]="editedUser.name"
+                                                            [formControl]="inputsFormControl.nameFormControl"
+                                                            [errorStateMatcher]="matcher" placeholder="Jarosław">
+                                                        <mat-error
+                                                            *ngIf="inputsFormControl.nameFormControl.hasError('required')">
+                                                            Proszę uzupełnić imię
+                                                        </mat-error>
+                                                        <mat-error
+                                                            *ngIf="inputsFormControl.nameFormControl.hasError('minlength') || inputsFormControl.nameFormControl.hasError('maxlength')">
+                                                            Wprowadzone imię jest niepoprawne
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                    <br>
+                                                    <br>
+                                                    <mat-form-field class="example-full-width">
+                                                        <mat-label>Nazwisko</mat-label>
+                                                        <input type="text" matInput [(ngModel)]="editedUser.surname"
+                                                            [formControl]="inputsFormControl.surnameFormControl"
+                                                            [errorStateMatcher]="matcher" placeholder="Kaczyński">
+                                                        <mat-error
+                                                            *ngIf="inputsFormControl.surnameFormControl.hasError('required')">
+                                                            Proszę uzupełnić nazwisko
+                                                        </mat-error>
+                                                        <mat-error
+                                                            *ngIf="inputsFormControl.surnameFormControl.hasError('minlength') || inputsFormControl.surnameFormControl.hasError('maxlength')">
+                                                            Wprowadzone nazwisko jest niepoprawne
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                    <br>
+                                                    <br>
+                                                    <mat-form-field class="example-full-width">
+                                                        <mat-label>Numer telefonu</mat-label>
+                                                        <input type="number" matInput [(ngModel)]="editedUser.telephone"
+                                                            [formControl]="inputsFormControl.telephoneFormControl"
+                                                            [errorStateMatcher]="matcher" placeholder="123 456 789">
+                                                        <mat-error
+                                                            *ngIf="inputsFormControl.telephoneFormControl.hasError('required')">
+                                                            Proszę uzupełnić numer telefonu
+                                                        </mat-error>
+                                                        <mat-error
+                                                            *ngIf="inputsFormControl.telephoneFormControl.hasError('minlength') || inputsFormControl.telephoneFormControl.hasError('maxlength') || inputsFormControl.telephoneFormControl.hasError('max') || inputsFormControl.telephoneFormControl.hasError('min')">
+                                                            Proszę podać poprawny numer telefonu
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </mat-card-content>
+                                            </mat-card>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </mat-tab>
+                        <mat-tab>
+                            <ng-template mat-tab-label>Adres</ng-template>
+                            <br>
+                            <br>
+                            <div class="container">
+                                <form class="example-form">
+                                    <div class="row">
+                                        <div class="col-12 d-flex justify-content-center">
+                                            <mat-card class="margins">
+                                                <mat-card-content>
+                                                    <mat-form-field class="example-full-width">
+                                                        <mat-label>Miasto</mat-label>
+                                                        <input type="email" matInput
+                                                            [(ngModel)]="editedUser.address.city"
+                                                            [formControl]="inputsFormControl.cityFormControl"
+                                                            [errorStateMatcher]="matcher" placeholder="Gliwice">
+                                                        <mat-error
+                                                            *ngIf="inputsFormControl.cityFormControl.hasError('minlength') || inputsFormControl.cityFormControl.hasError('maxlength')">
+                                                            Wprowadź poprawną nazwę miasta
+                                                        </mat-error>
+                                                        <mat-error
+                                                            *ngIf="inputsFormControl.cityFormControl.hasError('required')">
+                                                            Podanie miasta jest <strong>wymagane</strong>
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                    <br>
+                                                    <br>
+                                                    <mat-form-field class="example-full-width">
+                                                        <mat-label>Kod pocztowy</mat-label>
+                                                        <input type="number" matInput
+                                                            [(ngModel)]="editedUser.address.postalCode"
+                                                            [formControl]="inputsFormControl.postalCodeFormControl"
+                                                            [errorStateMatcher]="matcher" placeholder="42560">
+                                                        <mat-error
+                                                            *ngIf="inputsFormControl.postalCodeFormControl.hasError('required')">
+                                                            Proszę uzupełnić kod pocztowy
+                                                        </mat-error>
+                                                        <mat-error
+                                                            *ngIf="inputsFormControl.postalCodeFormControl.hasError('maxlength') || inputsFormControl.postalCodeFormControl.hasError('minlength') || inputsFormControl.postalCodeFormControl.hasError('min') || inputsFormControl.postalCodeFormControl.hasError('max')">
+                                                            Podaj poprawny kod pocztowy <strong> bez</strong> żadnych
+                                                            separatorów
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                    <br>
+                                                    <br>
+                                                    <mat-form-field class="example-full-width">
+                                                        <mat-label>Ulica</mat-label>
+                                                        <input type="text" matInput
+                                                            [(ngModel)]="editedUser.address.street"
+                                                            [formControl]="inputsFormControl.streetFormControl"
+                                                            [errorStateMatcher]="matcher" placeholder="Kujawska">
+                                                        <mat-error
+                                                            *ngIf="inputsFormControl.streetFormControl.hasError('required')">
+                                                            Proszę uzupełnić nazwę ulicy
+                                                        </mat-error>
+                                                        <mat-error
+                                                            *ngIf="inputsFormControl.streetFormControl.hasError('minlength') || inputsFormControl.streetFormControl.hasError('maxlength')">
+                                                            Wprowadzona nazwa ulicy jest nieprawidłowa
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                    <br>
+                                                    <br>
+                                                    <mat-form-field class="example-full-width">
+                                                        <mat-label>Numer mieszkania</mat-label>
+                                                        <input type="text" matInput
+                                                            [(ngModel)]="editedUser.address.houseNumber"
+                                                            [formControl]="inputsFormControl.houseNumberControl"
+                                                            [errorStateMatcher]="matcher" placeholder="15B">
+                                                        <mat-error
+                                                            *ngIf="inputsFormControl.houseNumberControl.hasError('required')">
+                                                            Proszę uzupełnić dane o numerze domu/mieszkania
+                                                        </mat-error>
+                                                        <mat-error
+                                                            *ngIf="inputsFormControl.houseNumberControl.hasError('minlength') || inputsFormControl.houseNumberControl.hasError('maxlength')">
+                                                            Wprowadzony numer mieszkania jest nieprawidłowy
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </mat-card-content>
+                                            </mat-card>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </mat-card-content>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-6">
+                            <button mat-button
+                                (click)="updateUser(inputsFormControl.emailFormControl.value || '', inputsFormControl.passwordFormControl.value || '', inputsFormControl.nameFormControl.value || '', inputsFormControl.surnameFormControl.value || '', inputsFormControl.telephoneFormControl.value || '', inputsFormControl.cityFormControl.value || '', inputsFormControl.postalCodeFormControl.value || '', inputsFormControl.streetFormControl.value || '', inputsFormControl.horsePowerFormControl.value || '')">Zmień
+                                dane</button>
+                        </div>
+                        <div class="col-6">
+                            <button mat-button [disabled]="!enableDelete" (click)="deleteUser()">Usuń konto</button>
+                            <mat-checkbox class="example-margin" [(ngModel)]="enableDelete">Odblokuj</mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+            </mat-card>
+        </div>
+    </div>
+</div>

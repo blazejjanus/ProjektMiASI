@@ -1,0 +1,55 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <mat-card>
+                <mat-card-content>
+                    <div style="text-align: center;">
+                        <h4>Logowanie</h4>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-center">
+                                <form class="example-form">
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Email</mat-label>
+                                        <input type="email" matInput [formControl]="inputsFormControl.emailFormControl"
+                                            [errorStateMatcher]="matcher" placeholder="Jarosław.Kaczynski@gmail.com">
+                                        <mat-error
+                                            *ngIf="inputsFormControl.emailFormControl.hasError('minlength') || inputsFormControl.emailFormControl.hasError('maxlength')">
+                                            Wprowadź poprawny adres email
+                                        </mat-error>
+                                        <mat-error *ngIf="inputsFormControl.emailFormControl.hasError('required')">
+                                            Email jest <strong>wymagany</strong>
+                                        </mat-error>
+                                    </mat-form-field>
+                                    <br>
+                                    <br>
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Hasło</mat-label>
+                                        <input type="password" matInput
+                                            [formControl]="inputsFormControl.passwordFormControl"
+                                            [errorStateMatcher]="matcher" placeholder="********">
+                                        <mat-error *ngIf="inputsFormControl.passwordFormControl.hasError('required')">
+                                            Proszę uzupełnić hasło
+                                        </mat-error>
+                                        <mat-error
+                                            *ngIf="inputsFormControl.passwordFormControl.hasError('minlength') || inputsFormControl.passwordFormControl.hasError('maxlength')">
+                                            Hasło musi składać się z <strong>co najmniej</strong> 8 znaków, a <strong>
+                                                maksymalnie
+                                            </strong>z 32
+                                        </mat-error>
+                                    </mat-form-field>
+                                </form>
+                            </div>
+                            <br>
+                            <br>
+                            <button mat-button
+                                [disabled]="inputsFormControl.emailFormControl.invalid || inputsFormControl.passwordFormControl.invalid"
+                                (click)="login(inputsFormControl.emailFormControl.value || '', inputsFormControl.passwordFormControl.value || '')">Zaloguj</button>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>

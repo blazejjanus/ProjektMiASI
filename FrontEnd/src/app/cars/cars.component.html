@@ -1,0 +1,7 @@
+<div *ngIf="cars" class="container">
+    <div class="row">
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12" *ngFor="let car of cars; let i = index">
+            <app-card class="card" [car]="car"></app-card>
+        </div>
+    </div>
+</div>

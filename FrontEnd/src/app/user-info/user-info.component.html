@@ -1,0 +1,55 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <mat-card>
+                <mat-card-content (click)="navigate('info')">
+                    O mnie
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <mat-card>
+                <mat-card-content (click)="navigate('orders')">
+                    Złożone zamówienia
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <mat-card>
+                <mat-card-content (click)="navigate('orders/history')">
+                    Historia zamówień
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>
+<div class="container" *ngIf="isAdmin">
+    <div class="row">
+        <div class="col-12">
+            <mat-card>
+                <mat-card-content (click)="navigateToUsers()">
+                    Lista użytkowników
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>
+<div class="container" *ngIf="isAdmin">
+    <div class="row">
+        <div class="col-12">
+            <mat-card>
+                <mat-card-content (click)="openAddCar()">
+                    Dodaj nowy samochód
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>

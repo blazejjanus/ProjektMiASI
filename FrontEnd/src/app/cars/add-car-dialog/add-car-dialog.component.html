@@ -1,0 +1,234 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <mat-card>
+                <mat-card-content>
+                    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center"
+                        style="margin-left: auto; margin-right:auto">
+                        <mat-tab>
+                            <ng-template mat-tab-label>Informacje ogólne</ng-template>
+                            <br>
+                            <br>
+                            <div class="container">
+                                <form class="example-form">
+                                    <div class="row">
+                                        <div class="col-12 d-flex justify-content-center">
+                                            <mat-card class="margins">
+                                                <mat-card-content>
+                                                    <div class="container">
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <mat-form-field>
+                                                                    <mat-label>Cena</mat-label>
+                                                                    <input [(ngModel)]="newCar.pricePerDay"
+                                                                        type="number" matInput
+                                                                        [formControl]="inputsFormControl.pricePerDayFormControl"
+                                                                        [errorStateMatcher]="matcher"
+                                                                        placeholder="Podaj markę samochodu">
+                                                                    <mat-error
+                                                                        *ngIf="inputsFormControl.pricePerDayFormControl.hasError('min') || inputsFormControl.pricePerDayFormControl.hasError('max')">
+                                                                        Wprowadź poprawną cenę najmu samochodu z zakresu
+                                                                        0 - 15000 zł
+                                                                    </mat-error>
+                                                                    <mat-error
+                                                                        *ngIf="inputsFormControl.pricePerDayFormControl.hasError('required')">
+                                                                        Cena jest <strong>wymagana</strong>
+                                                                    </mat-error>
+                                                                </mat-form-field>
+                                                                <br>
+                                                                <mat-form-field>
+                                                                    <mat-label>Marka</mat-label>
+                                                                    <input [(ngModel)]="newCar.brand" type="text"
+                                                                        matInput
+                                                                        [formControl]="inputsFormControl.brandFormControl"
+                                                                        [errorStateMatcher]="matcher"
+                                                                        placeholder="Podaj markę samochodu">
+                                                                    <mat-error
+                                                                        *ngIf="inputsFormControl.brandFormControl.hasError('minlength') || inputsFormControl.brandFormControl.hasError('maxlength')">
+                                                                        Wprowadź poprawną nazwę marki samochodu
+                                                                    </mat-error>
+                                                                    <mat-error
+                                                                        *ngIf="inputsFormControl.brandFormControl.hasError('required')">
+                                                                        Marka jest <strong>wymagana</strong>
+                                                                    </mat-error>
+                                                                </mat-form-field>
+                                                                <br>
+                                                                <mat-form-field>
+                                                                    <mat-label>Model</mat-label>
+                                                                    <input [(ngModel)]="newCar.model" type="text"
+                                                                        matInput
+                                                                        [formControl]="inputsFormControl.modelFormControl"
+                                                                        [errorStateMatcher]="matcher"
+                                                                        placeholder="Podaj model samochodu">
+                                                                    <mat-error
+                                                                        *ngIf="inputsFormControl.modelFormControl.hasError('minlength') || inputsFormControl.modelFormControl.hasError('maxlength')">
+                                                                        Wprowadź poprawny model samochodu
+                                                                    </mat-error>
+                                                                    <mat-error
+                                                                        *ngIf="inputsFormControl.modelFormControl.hasError('required')">
+                                                                        Model jest <strong>wymagany</strong>
+                                                                    </mat-error>
+                                                                </mat-form-field>
+                                                                <br>
+                                                                <mat-form-field>
+                                                                    <mat-label>Rocznik</mat-label>
+                                                                    <input [(ngModel)]="newCar.productionYear"
+                                                                        type="number" matInput
+                                                                        [formControl]="inputsFormControl.yearFormControl"
+                                                                        [errorStateMatcher]="matcher"
+                                                                        placeholder="Podaj rocznik samochodu">
+                                                                </mat-form-field>
+                                                                <mat-error
+                                                                    *ngIf="inputsFormControl.yearFormControl.hasError('min') || inputsFormControl.yearFormControl.hasError('max')">
+                                                                    Wprowadź poprawny rocznik samochodu
+                                                                </mat-error>
+                                                                <mat-error
+                                                                    *ngIf="inputsFormControl.yearFormControl.hasError('required')">
+                                                                    Rocznik samochodu jest <strong>wymagany</strong>
+                                                                </mat-error>
+                                                                <br>
+                                                                <mat-form-field>
+                                                                    <mat-label>Moc [HP/KM]</mat-label>
+                                                                    <input [(ngModel)]="newCar.horsepower" type="number"
+                                                                        matInput
+                                                                        [formControl]="inputsFormControl.horsePowerFormControl"
+                                                                        [errorStateMatcher]="matcher"
+                                                                        placeholder="Podaj moc samochodu">
+                                                                </mat-form-field>
+                                                                <mat-error
+                                                                    *ngIf="inputsFormControl.horsePowerFormControl.hasError('min') || inputsFormControl.horsePowerFormControl.hasError('max')">
+                                                                    Wprowadź poprawną moc samochodu
+                                                                </mat-error>
+                                                                <mat-error
+                                                                    *ngIf="inputsFormControl.horsePowerFormControl.hasError('required')">
+                                                                    Moc samochodu jest <strong>wymagana</strong>
+                                                                </mat-error>
+                                                                <br>
+                                                                <mat-form-field>
+                                                                    <mat-label>Pojemność silnika</mat-label>
+                                                                    <input [(ngModel)]="newCar.engineCapacity"
+                                                                        type="number" matInput
+                                                                        [formControl]="inputsFormControl.engineCapacityFormControl"
+                                                                        [errorStateMatcher]="matcher"
+                                                                        placeholder="Podaj pojemność samochodu">
+                                                                </mat-form-field>
+                                                                <mat-error
+                                                                    *ngIf="inputsFormControl.engineCapacityFormControl.hasError('minlength') || inputsFormControl.engineCapacityFormControl.hasError('maxlength')">
+                                                                    Wprowadź poprawną pojemność samochodu
+                                                                </mat-error>
+                                                                <mat-error
+                                                                    *ngIf="inputsFormControl.engineCapacityFormControl.hasError('required')">
+                                                                    Pojemność samochodu jest <strong>wymagana</strong>
+                                                                </mat-error>
+                                                                <br>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </mat-card-content>
+                                            </mat-card>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </mat-tab>
+                        <mat-tab>
+                            <ng-template mat-tab-label>c.d.</ng-template>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12 d-flex justify-content-center">
+                                        <mat-card>
+                                            <mat-form-field>
+                                                <mat-label>Numer rejestracyjny</mat-label>
+                                                <input [(ngModel)]="newCar.registrationNumber" type="text" matInput
+                                                    [formControl]="inputsFormControl.registrationFormControl"
+                                                    [errorStateMatcher]="matcher"
+                                                    placeholder="Podaj numer rejestracyjny samochodu">
+                                            </mat-form-field>
+                                            <mat-error
+                                                *ngIf="inputsFormControl.registrationFormControl.hasError('minlength') || inputsFormControl.registrationFormControl.hasError('maxlength')">
+                                                Wprowadź poprawny numer rejestracyjny
+                                            </mat-error>
+                                            <mat-error
+                                                *ngIf="inputsFormControl.registrationFormControl.hasError('required')">
+                                                Numer rejestracyjny pojazdu jest <strong>wymagany</strong>
+                                            </mat-error>
+                                            <mat-form-field>
+                                                <mat-label>Ilość siedzeń</mat-label>
+                                                <input [(ngModel)]="newCar.seatsNumber" type="number" matInput
+                                                    [formControl]="inputsFormControl.seatsFormControl"
+                                                    [errorStateMatcher]="matcher"
+                                                    placeholder="Podaj ilość siedzeń w samochodzie">
+                                            </mat-form-field>
+                                            <mat-error
+                                                *ngIf="inputsFormControl.seatsFormControl.hasError('min') || inputsFormControl.seatsFormControl.hasError('max')">
+                                                Wprowadź poprawną ilość siedzeń pojazdu
+                                            </mat-error>
+                                            <mat-error *ngIf="inputsFormControl.seatsFormControl.hasError('required')">
+                                                Ilość siedzeń samochodu jest
+                                                <strong>wymagana</strong>
+                                            </mat-error>
+                                            <br>
+                                            <mat-form-field class="full-width">
+                                                <mat-label>Paliwo</mat-label>
+                                                <mat-select [(ngModel)]="newCar.fuelType" name="carStatus" required>
+                                                    <mat-option [value]="0">Benzyna</mat-option>
+                                                    <mat-option [value]="1">Diesel</mat-option>
+                                                    <mat-option [value]="2">LPG</mat-option>
+                                                    <mat-option [value]="3">Elektryczny</mat-option>
+                                                    <mat-option [value]="4">Wodorowy</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <br>
+                                            <mat-form-field>
+                                                <mat-label>Szczegółowy opis</mat-label>
+                                                <textarea [(ngModel)]="newCar.longDescription" type="text" matInput
+                                                    [formControl]="inputsFormControl.longDescriptionFormControl"
+                                                    [errorStateMatcher]="matcher"
+                                                    placeholder="Podaj opis samochodu"> </textarea>
+                                            </mat-form-field>
+                                            <mat-error
+                                                *ngIf="inputsFormControl.longDescriptionFormControl.hasError('minlength') || inputsFormControl.longDescriptionFormControl.hasError('maxlength')">
+                                                Wprowadź poprawny opis samochodu
+                                            </mat-error>
+                                            <mat-error
+                                                *ngIf="inputsFormControl.longDescriptionFormControl.hasError('required')">
+                                                Opis samochodu jest <strong>wymagany</strong>
+                                            </mat-error>
+                                            <br>
+                                            <mat-form-field>
+                                                <mat-label>Krótki opis</mat-label>
+                                                <textarea [(ngModel)]="newCar.shortDescription" type="text" matInput
+                                                    [formControl]="inputsFormControl.shortDescriptionFormControl"
+                                                    [errorStateMatcher]="matcher"
+                                                    placeholder="Podaj opis samochodu"> </textarea>
+                                            </mat-form-field>
+                                            <mat-error
+                                                *ngIf="inputsFormControl.shortDescriptionFormControl.hasError('minlength') || inputsFormControl.shortDescriptionFormControl.hasError('maxlength')">
+                                                Wprowadź poprawny opis samochodu
+                                            </mat-error>
+                                            <mat-error
+                                                *ngIf="inputsFormControl.shortDescriptionFormControl.hasError('required')">
+                                                Opis samochodu jest <strong>wymagany</strong>
+                                            </mat-error>
+                                            <br>
+                                        </mat-card>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </mat-card-content>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12" style="text-align: center;">
+                            <button mat-button
+                                [disabled]="inputsFormControl.pricePerDayFormControl.invalid || inputsFormControl.brandFormControl.invalid || inputsFormControl.modelFormControl.invalid || inputsFormControl.yearFormControl.invalid || inputsFormControl.horsePowerFormControl.invalid || inputsFormControl.engineCapacityFormControl.invalid || inputsFormControl.seatsFormControl.invalid || inputsFormControl.shortDescriptionFormControl.invalid || inputsFormControl.longDescriptionFormControl.invalid"
+                                (click)="addCar(inputsFormControl.pricePerDayFormControl.value || '', inputsFormControl.brandFormControl.value || '', inputsFormControl.modelFormControl.value || '', inputsFormControl.yearFormControl.value || '', inputsFormControl.horsePowerFormControl.value || '', inputsFormControl.engineCapacityFormControl.value || '', inputsFormControl.registrationFormControl.value || '', inputsFormControl.seatsFormControl.value || '', inputsFormControl.shortDescriptionFormControl.value || '', inputsFormControl.longDescriptionFormControl.value || '')">
+                                Dodaj </button>
+                        </div>
+                    </div>
+                </div>
+            </mat-card>
+        </div>
+    </div>
+</div>
