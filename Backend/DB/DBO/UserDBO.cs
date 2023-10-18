@@ -17,6 +17,7 @@ namespace DB.DBO {
         public virtual string Surname { get; set; }
         [Required]
         public virtual string Password { get; set; }
+        [ForeignKey("AddressID")]
         public virtual AddressDBO Address { get; set; }
 
         public UserDBO() {

@@ -14,6 +14,9 @@ namespace Shared {
             path = SplitPath(path, ".build");
             path = SplitPath(path, "bin");
             path = SplitPath(path, "API");
+            path = SplitPath(path, "DB");
+            path = SplitPath(path, "Shared");
+            path = SplitPath(path, "Services");
             RootPath = path;
             //Fill and validate aditional pathes
             //LogPath
@@ -31,7 +34,7 @@ namespace Shared {
             //ConfigFilePath
             ConfigFilePath = Path.Combine(RootPath, "config.json");
             if(!File.Exists(ConfigFilePath)) {
-                throw new FileNotFoundException("config.json not found!");
+                throw new FileNotFoundException(ConfigFilePath);
             }
         }
 

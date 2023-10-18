@@ -13,7 +13,7 @@ namespace API {
             if (config.IsDevelopmentEnvironment) {
                 Console.WriteLine("config read:\n" + config.ToJson() + "\n");
             }
-
+            var ctx = new DataContext();
             // Add services to the container.
             builder.Services.AddSingleton(config);
             //Services goes here

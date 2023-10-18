@@ -22,6 +22,7 @@ namespace Shared {
 
         public static Config ReadConfig() {
             var env = Environment.GetInstance();
+            if (!File.Exists(env.ConfigFilePath)) throw new FileNotFoundException(env.ConfigFilePath);
             string json = File.ReadAllText(env.ConfigFilePath);
             if(string.IsNullOrEmpty(json)) { throw new Exception("Obtained json config was empty!"); }
             var config = JsonSerializer.Deserialize<Config>(json);

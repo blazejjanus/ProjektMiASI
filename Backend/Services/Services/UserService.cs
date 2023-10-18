@@ -15,7 +15,7 @@ namespace Services.Services {
         }
 
         public IActionResult AddUser(UserDTO user) {
-            using (var context = new DataContext()) {
+            using (var context = new DataContext(Config)) {
                 if (!context.Users.Any(x => x.Email == user.Email)) {
                     context.Users.Add(Mapper.Get().Map<UserDBO>(user));
                     context.SaveChanges();
@@ -27,7 +27,7 @@ namespace Services.Services {
         }
 
         public IActionResult GetUser(int ID) {
-            using (var context = new DataContext()) {
+            using (var context = new DataContext(Config)) {
                 if (context.Users.Any(x => x.ID == ID)) {
                     UserDBO dbo = context.Users.Single(x => x.ID == ID);
                     return new ObjectResult(Mapper.Get().Map<UserDTO>(dbo)) { StatusCode = StatusCodes.Status200OK };
@@ -38,7 +38,7 @@ namespace Services.Services {
         }
 
         public IActionResult GetUser(string email) {
-            using (var context = new DataContext()) {
+            using (var context = new DataContext(Config)) {
                 if (context.Users.Any(x => x.Email == email)) {
                     UserDBO dbo = context.Users.Single(x => x.Email == email);
                     return new ObjectResult(Mapper.Get().Map<UserDTO>(dbo)) { StatusCode = StatusCodes.Status200OK };
@@ -49,7 +49,7 @@ namespace Services.Services {
         }
 
         public IActionResult ModifyUser(UserDTO user) {
-            using (var context = new DataContext()) {
+            using (var context = new DataContext(Config)) {
                 if (context.Users.Any(x => x.Email == user.Email)) {
                     UserDBO dbo = context.Users.Single(x => x.Email == user.Email);
                     dbo.Email = user.Email;
@@ -65,7 +65,7 @@ namespace Services.Services {
         }
 
         public IActionResult RemoveUser(string email) {
-            using (var context = new DataContext()) {
+            using (var context = new DataContext(Config)) {
                 if (context.Users.Any(x => x.Email == email)) {
                     UserDBO dbo = context.Users.Single(x => x.Email == email);
                     context.Users.Remove(dbo);
