@@ -1,3 +1,6 @@
+using DB;
+using Services.Interfaces;
+using Services.Services;
 using Shared;
 
 namespace API {
@@ -12,6 +15,11 @@ namespace API {
             }
 
             // Add services to the container.
+            builder.Services.AddSingleton(config);
+            //Services goes here
+            builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+            builder.Services.AddScoped<ILoggingService, LoggingService>();
+            builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

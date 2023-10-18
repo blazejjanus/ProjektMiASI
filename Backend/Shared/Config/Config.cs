@@ -9,6 +9,8 @@ namespace Shared {
         public JWTConfig JWT { get; set; }
         [JsonPropertyName("ConnectionString")]
         public string ConnectionString { get; set; }
+        [JsonPropertyName("UseLogFile")]
+        public bool UseLogFile { get; set; }
         [JsonIgnore]
         public bool IsJWTValid => JWT.IsValid;
 
