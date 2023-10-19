@@ -27,6 +27,7 @@ namespace API.Controllers {
         public IActionResult GetUserByID([FromRoute] int ID, [FromHeader] string jwt) {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
+                    _loggingService.Log("UserController:GetUserByID: 401", Shared.Enums.EventType.ERROR);
                     return new StatusCodeResult(401);
                 }
                 return Result.Pass(_userService.GetUser(ID), "UserController", "GetUserByID");
@@ -45,6 +46,7 @@ namespace API.Controllers {
         public IActionResult GetUserByUsername([FromRoute] string Email, [FromHeader] string jwt) {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
+                    _loggingService.Log("UserController:GetUserByUsername: 401", Shared.Enums.EventType.ERROR);
                     return new StatusCodeResult(401);
                 }
                 return Result.Pass(_userService.GetUser(Email), "UserController", "GetUserByID");
@@ -64,6 +66,7 @@ namespace API.Controllers {
         public IActionResult AddUser([FromBody] UserDTO user, [FromHeader] string jwt) {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
+                    _loggingService.Log("UserController:AddUser: 401", Shared.Enums.EventType.ERROR);
                     return new StatusCodeResult(401);
                 }
                 return Result.Pass(_userService.AddUser(user), "UserController", "AddUser");
@@ -82,9 +85,11 @@ namespace API.Controllers {
         public IActionResult UpdateUser([FromBody] UserDTO user, [FromHeader] string jwt) {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
+                    _loggingService.Log("UserController:UpdateUser: 401", Shared.Enums.EventType.ERROR);
                     return new StatusCodeResult(401);
                 }
                 if (!_authenticationService.IsUser(jwt, user.ID)) {
+                    _loggingService.Log("UserController:UpdateUser: 403 - provided token is not a token of user being updated.", Shared.Enums.EventType.ERROR);
                     return new StatusCodeResult(403);
                 }
                 return Result.Pass(_userService.ModifyUser(user), "UserController", "UpdateUser");
@@ -103,6 +108,7 @@ namespace API.Controllers {
         public IActionResult DeleteUserByID([FromRoute] int ID, [FromHeader] string jwt) {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
+                    _loggingService.Log("UserController:DeleteUserByID: 401", Shared.Enums.EventType.ERROR);
                     return new StatusCodeResult(401);
                 }
                 return Result.Pass(_userService.RemoveUser(ID), "UserController", "DeleteUserByID");
@@ -121,6 +127,7 @@ namespace API.Controllers {
         public IActionResult DeleteUserByEmail([FromRoute] string email, [FromHeader] string jwt) {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
+                    _loggingService.Log("UserController:DeleteUserByEmail: 401", Shared.Enums.EventType.ERROR);
                     return new StatusCodeResult(401);
                 }
                 return Result.Pass(_userService.RemoveUser(email), "UserController", "DeleteUserByEmail");

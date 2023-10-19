@@ -16,8 +16,8 @@ namespace API {
             // Add services to the container.
             builder.Services.AddSingleton(config);
             //Services goes here
+            builder.Services.AddSingleton<ILoggingService, LoggingService>();
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
-            builder.Services.AddScoped<ILoggingService, LoggingService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<ILoginService, LoginService>();
             builder.Services.AddControllers();
