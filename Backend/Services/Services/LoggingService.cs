@@ -8,7 +8,7 @@ namespace Services.Services {
     public class LoggingService : ILoggingService {
         private Config Config { get; }
         private Environment Environment { get; }
-        private string LogFileName { get; }
+        private string LogFileName { get; set; } = string.Empty;
 
         public LoggingService(Config config) {
             Config = config;
@@ -91,7 +91,7 @@ namespace Services.Services {
                     }
                 }
             }
-            return file + ".log";
+            return Path.Combine(Environment.LogPath, file + ".log");
         }
     }
 }

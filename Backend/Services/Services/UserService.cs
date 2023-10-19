@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.DTO;
 using Services.Interfaces;
+using Services.Utils;
 using Shared;
 
-namespace Services.Services {
+namespace Services.Services
+{
     public class UserService : IUserService {
         private Config Config { get; }
 
@@ -68,6 +70,19 @@ namespace Services.Services {
             using (var context = new DataContext(Config)) {
                 if (context.Users.Any(x => x.Email == email)) {
                     UserDBO dbo = context.Users.Single(x => x.Email == email);
+                    context.Users.Remove(dbo);
+                    context.SaveChanges();
+                    return new StatusCodeResult(StatusCodes.Status200OK);
+                } else {
+                    return new StatusCodeResult(StatusCodes.Status404NotFound);
+                }
+            }
+        }
+
+        public IActionResult RemoveUser(int ID) {
+            using (var context = new DataContext(Config)) {
+                if (context.Users.Any(x => x.ID == ID)) {
+                    UserDBO dbo = context.Users.Single(x => x.ID == ID);
                     context.Users.Remove(dbo);
                     context.SaveChanges();
                     return new StatusCodeResult(StatusCodes.Status200OK);

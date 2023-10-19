@@ -45,12 +45,16 @@ namespace Shared {
             return _instance;
         }
 
-        public override string ToString() {
+        public string ToString(bool writeIntended = false) {
+            string prefix = string.Empty;
+            if (writeIntended) {
+                prefix = "\t";
+            }
             var sb = new StringBuilder();
-            sb.AppendLine(RootPath);
-            sb.AppendLine(LogPath);
-            sb.AppendLine(DbPath);
-            sb.AppendLine(ConfigFilePath);
+            sb.AppendLine(prefix + "RootPath:       " + RootPath);
+            sb.AppendLine(prefix + "LogPath:        " + LogPath);
+            sb.AppendLine(prefix + "DbPath:         " + DbPath);
+            sb.AppendLine(prefix + "ConfigFilePath: " + ConfigFilePath);
             return sb.ToString();
         }
 

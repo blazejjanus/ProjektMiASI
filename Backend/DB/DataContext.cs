@@ -33,6 +33,8 @@ namespace DB {
 
         public DbSet<UserDBO> Users { get; set; }
         public DbSet<AddressDBO> Address { get; set; }
+        public DbSet<CarDBO> Cars { get; set; }
+        public DbSet<OrderDBO> Orders { get; set; }
         public DbSet<JwtDBO> Jwt { get; set; }
         public DbSet<EventDBO> Events { get; set; }
     }

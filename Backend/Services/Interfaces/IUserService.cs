@@ -5,6 +5,7 @@ namespace Services.Interfaces {
     public interface IUserService {
         public IActionResult AddUser(UserDTO user);
         public IActionResult RemoveUser(string email);
+        public IActionResult RemoveUser(int ID);
         public IActionResult ModifyUser(UserDTO user);
         public IActionResult GetUser(int ID);
         public IActionResult GetUser(string email);

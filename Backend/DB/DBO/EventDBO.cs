@@ -9,11 +9,11 @@ namespace DB.DBO {
         public virtual int ID { get; set; }
         public virtual DateTime DateTime { get; set; }
         public virtual EventType Type { get; set; }
-        [MaxLength(250)]
+        [MaxLength(5000)]
         public virtual string? Message { get; set; }
-        [MaxLength(250)]
+        [MaxLength(10000)]
         public virtual string? Inner { get; set; }
-        [MaxLength(100)]
+        [MaxLength(5000)]
         public virtual string? Trace { get; set; }
 
         public EventDBO(string message, EventType type) {

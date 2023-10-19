@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Services.DTO;
 using Services.Interfaces;
 
 namespace API.Controllers {
@@ -16,8 +17,8 @@ namespace API.Controllers {
             _authenticationService = authenticationService;
             Result = new ResultTranslation(_loggingService);
         }
-
-        [HttpGet("GetByID/{ID}")]
+        #region Get User
+        [HttpGet("GetUserByID/{ID}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -30,9 +31,104 @@ namespace API.Controllers {
                 }
                 return Result.Pass(_userService.GetUser(ID), "UserController", "GetUserByID");
             } catch(Exception exc) {
-                _loggingService.Log(exc, "GetUserByID");
+                _loggingService.Log(exc, "UserController:GetUserByID");
                 return new StatusCodeResult(500);
             }
         }
+
+        [HttpGet("GetUserByEmail/{Email}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult GetUserByUsername([FromRoute] string Email, [FromHeader] string jwt) {
+            try {
+                if (!_authenticationService.IsValid(jwt)) {
+                    return new StatusCodeResult(401);
+                }
+                return Result.Pass(_userService.GetUser(Email), "UserController", "GetUserByID");
+            } catch (Exception exc) {
+                _loggingService.Log(exc, "UserController:GetUserByEmail");
+                return new StatusCodeResult(500);
+            }
+        }
+        #endregion
+        #region Change User
+        [HttpPost("AddUser")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult AddUser([FromBody] UserDTO user, [FromHeader] string jwt) {
+            try {
+                if (!_authenticationService.IsValid(jwt)) {
+                    return new StatusCodeResult(401);
+                }
+                return Result.Pass(_userService.AddUser(user), "UserController", "AddUser");
+            } catch (Exception exc) {
+                _loggingService.Log(exc, "UserController:AddUser");
+                return new StatusCodeResult(500);
+            }
+        }
+
+        [HttpPut("UpdateUser")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult UpdateUser([FromBody] UserDTO user, [FromHeader] string jwt) {
+            try {
+                if (!_authenticationService.IsValid(jwt)) {
+                    return new StatusCodeResult(401);
+                }
+                if (!_authenticationService.IsUser(jwt, user.ID)) {
+                    return new StatusCodeResult(403);
+                }
+                return Result.Pass(_userService.ModifyUser(user), "UserController", "UpdateUser");
+            } catch (Exception exc) {
+                _loggingService.Log(exc, "UserController:UpdateUser");
+                return new StatusCodeResult(500);
+            }
+        }
+
+        [HttpDelete("DeleteUserByID/{ID}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult DeleteUserByID([FromRoute] int ID, [FromHeader] string jwt) {
+            try {
+                if (!_authenticationService.IsValid(jwt)) {
+                    return new StatusCodeResult(401);
+                }
+                return Result.Pass(_userService.RemoveUser(ID), "UserController", "DeleteUserByID");
+            } catch (Exception exc) {
+                _loggingService.Log(exc, "UserController:DeleteUserByID");
+                return new StatusCodeResult(500);
+            }
+        }
+
+        [HttpDelete("DeleteUserByEmail/{email}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult DeleteUserByEmail([FromRoute] string email, [FromHeader] string jwt) {
+            try {
+                if (!_authenticationService.IsValid(jwt)) {
+                    return new StatusCodeResult(401);
+                }
+                return Result.Pass(_userService.RemoveUser(email), "UserController", "DeleteUserByEmail");
+            } catch (Exception exc) {
+                _loggingService.Log(exc, "UserController:DeleteUserByEmail");
+                return new StatusCodeResult(500);
+            }
+        }
+        #endregion
     }
 }

@@ -1,4 +1,3 @@
-using DB;
 using Services.Interfaces;
 using Services.Services;
 using Shared;
@@ -11,15 +10,16 @@ namespace API {
             var environment = Environment.GetInstance();
             var config = Config.ReadConfig();
             if (config.IsDevelopmentEnvironment) {
+                Console.WriteLine("Set up environment pathes:\n" + environment.ToString(true));
                 Console.WriteLine("config read:\n" + config.ToJson() + "\n");
             }
-            var ctx = new DataContext();
             // Add services to the container.
             builder.Services.AddSingleton(config);
             //Services goes here
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<ILoggingService, LoggingService>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<ILoginService, LoginService>();
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
