@@ -1,7 +1,10 @@
 ﻿using DB;
 using DB.DBO;
+using Services.DTO;
 using Services.Interfaces;
+using Services.Utils;
 using Shared;
+using Shared.Enums;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace Services.Services {
@@ -43,6 +46,17 @@ namespace Services.Services {
             }
         }
 
+        public UserDTO GetUser(string jwt) {
+            int id = GetUserID(jwt);
+            using(var context = new DataContext(Config)) {
+                if(context.Users.Any(x => x.ID == id)) {
+                    return Mapper.Get().Map<UserDTO>(context.Users.Single(x => x.ID == id));
+                } else {
+                    throw new Exception($"Provided JWT token points an user with ID {id}. User with that ID was not found!");
+                }
+            }
+        }
+
         public bool IsUser(string jwt, int userID) {
             int id = GetUserID(jwt);
             if(id == userID) {
@@ -50,6 +64,14 @@ namespace Services.Services {
             } else {
                 return false;
             }
+        }
+
+        public bool IsUserType(string jwt, UserType userType) {
+            var user = GetUser(jwt);
+            if(user.UserType >= userType) {
+                return true;
+            }
+            return false;
         }
 
         public bool IsValid(string jwt) {
