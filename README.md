@@ -1,2 +1,2 @@
 # ProjektMiASI
-Wyporzyczalnia samochodów
+Wypożyczalnia samochodów
