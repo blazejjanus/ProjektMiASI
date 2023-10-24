@@ -78,5 +78,47 @@ namespace Services.Services {
                 }
             }
         }
+
+        public IActionResult GetCarMainImage(int ID) {
+            using(var context = new DataContext(Config)) {
+                if (context.Cars.Any(x => x.ID == ID)) {
+                    var car = context.Cars.Single(x => x.ID == ID);
+                    if(context.Images.Any(x => x.Car.ID == car.ID && x.IsMain == true)) {
+                        var image = context.Images.Single(x => x.Car.ID == car.ID && x.IsMain == true);
+                        return new FileContentResult(image.Content, "image/jpeg");
+                    } else {
+                        return new StatusCodeResult(StatusCodes.Status404NotFound);
+                    }
+                } else {
+                    return new ObjectResult("Cannot find car with provided ID!") { StatusCode = StatusCodes.Status404NotFound };
+                }
+            }
+        }
+
+        public IActionResult GetCarImages(int ID) {
+            using (var context = new DataContext(Config)) {
+                if (context.Cars.Any(x => x.ID == ID)) {
+                    var car = context.Cars.Single(x => x.ID == ID);
+                    if (context.Images.Any(x => x.Car.ID == car.ID)) {
+                        List<ImageDBO> images = new List<ImageDBO>();
+                        if(context.Images.Any(x => x.Car.ID == car.ID && x.IsMain == true)) {
+                            images.Add(context.Images.Single(x => x.Car.ID == car.ID && x.IsMain == true));
+                            images.AddRange(context.Images.Where(x => x.Car.ID == car.ID && x.IsMain == false).ToList());
+                        } else {
+                            images.AddRange(context.Images.Where(x => x.Car.ID == car.ID).ToList());
+                        }
+                        List<FileContentResult> results = new List<FileContentResult>();
+                        foreach (var image in images) {
+                            results.Add(new FileContentResult(image.Content, "image/jpeg"));
+                        }
+                        return new ObjectResult(results) { StatusCode = 200 };
+                    } else {
+                        return new StatusCodeResult(StatusCodes.Status404NotFound);
+                    }
+                } else {
+                    return new ObjectResult("Cannot find car with provided ID!") { StatusCode = StatusCodes.Status404NotFound };
+                }
+            }
+        }
     }
 }

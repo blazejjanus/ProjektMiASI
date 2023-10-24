@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Shared.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DB.DBO {
@@ -19,6 +20,22 @@ namespace DB.DBO {
         public virtual int SeatsNumber { get; set; }
         [Required]
         public virtual bool IsOperational { get; set; }
+        [Required]
+        public virtual DateTime ProductionDate { get; set; }
+        [Required]
+        public virtual double Horsepower { get; set; }
+        [Required]
+        public virtual double EngineCapacity { get; set; }
+        [Required]
+        public virtual FuelType FuelType { get; set; }
+        [Required]
+        [MaxLength(500)]
+        public virtual string ShortDescription { get; set; }
+        [Required]
+        [MaxLength(5000)]
+        public virtual string LongDescription { get; set; }
+        [Required]
+        public virtual double PricePerDay { get; set; }
 
         public CarDBO() {
             Brand = string.Empty;

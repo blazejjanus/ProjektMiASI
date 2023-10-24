@@ -32,6 +32,8 @@ namespace Shared {
                 return IsSuccess(((ObjectResult)result).StatusCode);
             if(result is StatusCodeResult)
                 return IsSuccess(((StatusCodeResult)result).StatusCode);
+            if (result is FileContentResult)
+                return true;
             return false;
         }
 
@@ -40,6 +42,8 @@ namespace Shared {
                 return ((ObjectResult)result).StatusCode;
             if (result is StatusCodeResult)
                 return ((StatusCodeResult)result).StatusCode;
+            if (result is FileContentResult)
+                return 200;
             return null;
         }
     }
