@@ -9,6 +9,8 @@ namespace DB.DBO {
         [Required]
         public virtual DateTime CreationDate { get; set; }
         [Required]
+        public virtual DateTime LastUpdate { get; set; }
+        [Required]
         public virtual byte[] Content { get; set; }
         [Required]
         public virtual bool IsMain { get; set; }
@@ -19,6 +21,7 @@ namespace DB.DBO {
         public ImageDBO() { 
             Content = Array.Empty<byte>();
             CreationDate = DateTime.Now;
+            LastUpdate = DateTime.Now;
             Car = new CarDBO();
             IsMain = false;
         }
