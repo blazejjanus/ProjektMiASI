@@ -22,16 +22,10 @@ namespace API.Controllers {
         #region GET
         [HttpGet("GetCarByID/{ID}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult GetCarByID([FromRoute] int ID, [FromHeader] string jwt) {
+        public IActionResult GetCarByID([FromRoute] int ID) {
             try {
-                if (!_authenticationService.IsValid(jwt)) {
-                    _loggingService.Log("CarManagementController:GetCarByID: 401", Shared.Enums.EventType.ERROR);
-                    return new StatusCodeResult(401);
-                }
                 return Result.Pass(_carManagementService.GetCarByID(ID), "CarManagementController", "GetCarByID");
             } catch (Exception exc) {
                 _loggingService.Log(exc, "CarManagementController:GetCarByID");
@@ -41,16 +35,10 @@ namespace API.Controllers {
 
         [HttpGet("GetCarByRegistrationNumber/{registrationNumber}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult GetCarByRegistrationNumber([FromRoute] string registrationNumber, [FromHeader] string jwt) {
+        public IActionResult GetCarByRegistrationNumber([FromRoute] string registrationNumber) {
             try {
-                if (!_authenticationService.IsValid(jwt)) {
-                    _loggingService.Log("CarManagementController:GetCarByRegistrationNumber: 401", Shared.Enums.EventType.ERROR);
-                    return new StatusCodeResult(401);
-                }
                 return Result.Pass(_carManagementService.GetCarRegistrationNumber(registrationNumber), "CarManagementController", "GetCarByRegistrationNumber");
             } catch (Exception exc) {
                 _loggingService.Log(exc, "CarManagementController:GetCarByRegistrationNumber");

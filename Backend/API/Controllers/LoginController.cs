@@ -18,7 +18,6 @@ namespace API.Controllers {
 
         [HttpGet("Login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Login([FromHeader] string username, [FromHeader] string password) {

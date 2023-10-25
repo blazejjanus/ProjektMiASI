@@ -20,7 +20,6 @@ namespace DB {
                 } else {
                     config = Config.ReadConfig();
                 }
-                //AppDomain.CurrentDomain.SetData("DataDirectory", Environment.GetInstance().RootPath);
                 optionsBuilder.UseLazyLoadingProxies().UseSqlServer(config.ConnectionString);
             }
         }
@@ -37,5 +36,6 @@ namespace DB {
         public DbSet<OrderDBO> Orders { get; set; }
         public DbSet<JwtDBO> Jwt { get; set; }
         public DbSet<EventDBO> Events { get; set; }
+        public DbSet<ImageDBO> Images { get; set; }
     }
 }
