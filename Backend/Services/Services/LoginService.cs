@@ -27,10 +27,15 @@ namespace Services.Services {
                         return new ObjectResult("User with same email already registered!") { StatusCode = StatusCodes.Status409Conflict };
                     }
                     var dbo = Mapper.Get().Map<UserDBO>(user);
+                    //Generate hash
                     using (var hashingHelper = new HashingHelper(Config)) {
                         var result = hashingHelper.HashPassword(user.Password);
                         dbo.PasswordHash = result.Hash;
                         dbo.PasswordSalt = result.Salt;
+                    }
+                    //Check if address exists in DB
+                    if (context.Address.AsEnumerable().Any(x => AddressDBO.Comparator(x, Mapper.Get().Map<AddressDBO>(user.Address)))) {
+                        dbo.Address = context.Address.AsEnumerable().Single(x => AddressDBO.Comparator(x, Mapper.Get().Map<AddressDBO>(user.Address)));
                     }
                     context.Add(dbo);
                     context.SaveChanges();

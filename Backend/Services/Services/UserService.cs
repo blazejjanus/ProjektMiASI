@@ -19,10 +19,15 @@ namespace Services.Services {
             using (var context = new DataContext(Config)) {
                 if (!context.Users.Any(x => x.Email == user.Email)) {
                     var dbo = Mapper.Get().Map<UserDBO>(user);
+                    //Hash password
                     using (var hashingHelper = new HashingHelper(Config)) {
                         var result = hashingHelper.HashPassword(user.Password);
                         dbo.PasswordHash = result.Hash;
                         dbo.PasswordSalt = result.Salt;
+                    }
+                    //Check if address exists in DB
+                    if(context.Address.AsEnumerable().Any(x => AddressDBO.Comparator(x, Mapper.Get().Map<AddressDBO>(user.Address)))){
+                        dbo.Address = context.Address.AsEnumerable().Single(x => AddressDBO.Comparator(x, Mapper.Get().Map<AddressDBO>(user.Address)));
                     }
                     context.Users.Add(dbo);
                     context.SaveChanges();

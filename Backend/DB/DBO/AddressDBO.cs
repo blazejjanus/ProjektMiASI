@@ -20,6 +20,13 @@ namespace DB.DBO {
         [MaxLength(64)]
         public virtual string City { get; set; }
 
+        public static Func<AddressDBO, AddressDBO, bool> Comparator { get; } = (first, second) =>
+            first.City == second.City &&
+            first.PostalCode == second.PostalCode &&
+            first.Street == second.Street &&
+            first.HouseNumber == second.HouseNumber &&
+            first.ApartmentNumber == second.ApartmentNumber;
+
         public AddressDBO() {
             Street = string.Empty;
             HouseNumber = string.Empty;
