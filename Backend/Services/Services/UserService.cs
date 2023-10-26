@@ -5,10 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Services.DTO;
 using Services.Interfaces;
 using Services.Utils;
-using Shared;
+using Shared.Configuration;
 
-namespace Services.Services
-{
+namespace Services.Services {
     public class UserService : IUserService {
         private Config Config { get; }
 
@@ -19,7 +18,18 @@ namespace Services.Services
         public IActionResult AddUser(UserDTO user) {
             using (var context = new DataContext(Config)) {
                 if (!context.Users.Any(x => x.Email == user.Email)) {
-                    context.Users.Add(Mapper.Get().Map<UserDBO>(user));
+                    var dbo = Mapper.Get().Map<UserDBO>(user);
+                    //Hash password
+                    using (var hashingHelper = new HashingHelper(Config)) {
+                        var result = hashingHelper.HashPassword(user.Password);
+                        dbo.PasswordHash = result.Hash;
+                        dbo.PasswordSalt = result.Salt;
+                    }
+                    //Check if address exists in DB
+                    if(context.Address.AsEnumerable().Any(x => AddressDBO.Comparator(x, Mapper.Get().Map<AddressDBO>(user.Address)))){
+                        dbo.Address = context.Address.AsEnumerable().Single(x => AddressDBO.Comparator(x, Mapper.Get().Map<AddressDBO>(user.Address)));
+                    }
+                    context.Users.Add(dbo);
                     context.SaveChanges();
                     return new StatusCodeResult(StatusCodes.Status201Created);
                 } else {
@@ -57,7 +67,7 @@ namespace Services.Services
                     dbo.Email = user.Email;
                     dbo.Name = user.Name;
                     dbo.Surname = user.Surname;
-                    dbo.Password = user.Password;
+                    dbo.PasswordHash = user.Password;
                     context.SaveChanges();
                     return new StatusCodeResult(StatusCodes.Status200OK);
                 } else {

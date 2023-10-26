@@ -1,12 +1,12 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using Shared;
 using System.Security.Claims;
 using System.Text;
 using DB.DBO;
+using Shared.Configuration;
 
 namespace Services.Utils {
-    internal class TokenGenerator {
+    internal class TokenGenerator : IDisposable {
         private Config Config { get; }
 
         public TokenGenerator(Config config) {
@@ -33,5 +33,7 @@ namespace Services.Utils {
                         SecurityAlgorithms.HmacSha256));
             return new JwtSecurityTokenHandler().WriteToken(jwtToken);
         }
+
+        public void Dispose() { }
     }
 }

@@ -4,11 +4,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.DTO;
 using Services.Interfaces;
-using Shared;
 using Services.Utils;
+using Shared.Configuration;
 
-namespace Services.Services
-{
+namespace Services.Services {
     public class LoginService : ILoginService {
         private readonly IAuthenticationService _authenticationService;
         private Config Config { get; }
@@ -28,6 +27,16 @@ namespace Services.Services
                         return new ObjectResult("User with same email already registered!") { StatusCode = StatusCodes.Status409Conflict };
                     }
                     var dbo = Mapper.Get().Map<UserDBO>(user);
+                    //Generate hash
+                    using (var hashingHelper = new HashingHelper(Config)) {
+                        var result = hashingHelper.HashPassword(user.Password);
+                        dbo.PasswordHash = result.Hash;
+                        dbo.PasswordSalt = result.Salt;
+                    }
+                    //Check if address exists in DB
+                    if (context.Address.AsEnumerable().Any(x => AddressDBO.Comparator(x, Mapper.Get().Map<AddressDBO>(user.Address)))) {
+                        dbo.Address = context.Address.AsEnumerable().Single(x => AddressDBO.Comparator(x, Mapper.Get().Map<AddressDBO>(user.Address)));
+                    }
                     context.Add(dbo);
                     context.SaveChanges();
                     var token = Generator.UserToken(dbo);
@@ -49,7 +58,8 @@ namespace Services.Services
             using (var context = new DataContext()) {
                 if (context.Users.Any(x => x.Email == email)) {
                     UserDBO user = context.Users.Single(x => x.Email == email);
-                    if (user.Password == password.Trim()) {
+                    var passwordHash = new HashingHelper(Config).HashPassword(password.Trim(), user.PasswordSalt);
+                    if (user.PasswordHash == passwordHash) {
                         string? token = null;
                         if (context.Jwt.Any(x => x.User.ID == user.ID)) {
                             var userTokens = context.Jwt.Where(x => x.User.ID == user.ID).ToList();

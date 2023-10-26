@@ -3,7 +3,7 @@ using DB.DBO;
 using Services.DTO;
 using Services.Interfaces;
 using Services.Utils;
-using Shared;
+using Shared.Configuration;
 using Shared.Enums;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -28,7 +28,7 @@ namespace Services.Services {
         public List<JwtDBO> GetUsersToken(int userID) {
             var result = new List<JwtDBO>();
             using (var context = new DataContext(Config)) {
-                if(context.Jwt.Any(x => x.User.ID == userID && x.Active)) {
+                if (context.Jwt.Any(x => x.User.ID == userID && x.Active)) {
                     result = context.Jwt.Where(x => x.User.ID == userID && x.Active).ToList();
                 }
             }
@@ -48,8 +48,8 @@ namespace Services.Services {
 
         public UserDTO GetUser(string jwt) {
             int id = GetUserID(jwt);
-            using(var context = new DataContext(Config)) {
-                if(context.Users.Any(x => x.ID == id)) {
+            using (var context = new DataContext(Config)) {
+                if (context.Users.Any(x => x.ID == id)) {
                     return Mapper.Get().Map<UserDTO>(context.Users.Single(x => x.ID == id));
                 } else {
                     throw new Exception($"Provided JWT token points an user with ID {id}. User with that ID was not found!");
@@ -59,7 +59,7 @@ namespace Services.Services {
 
         public bool IsUser(string jwt, int userID) {
             int id = GetUserID(jwt);
-            if(id == userID) {
+            if (id == userID) {
                 return true;
             } else {
                 return false;
@@ -68,7 +68,7 @@ namespace Services.Services {
 
         public bool IsUserType(string jwt, UserType userType) {
             var user = GetUser(jwt);
-            if(user.UserType >= userType) {
+            if (user.UserType >= userType) {
                 return true;
             }
             return false;
@@ -83,7 +83,7 @@ namespace Services.Services {
                 throw new Exception("JWT user not found!");
             }
             foreach (var userToken in userTokens) {
-                if(userToken.JWT == jwt) {
+                if (userToken.JWT == jwt) {
                     return true;
                 }
             }

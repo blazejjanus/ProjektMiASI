@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
-using Shared;
 using Shared.Enums;
+using Shared.Validation;
 
 namespace API {
     public class ResultTranslation {
@@ -12,7 +12,7 @@ namespace API {
         }
 
         public IActionResult Pass(IActionResult result, string controller, string method) {
-            if(result.GetType() == typeof(ObjectResult)) {
+            if (result.GetType() == typeof(ObjectResult)) {
                 return PassObjectResult((ObjectResult)result, controller, method);
             }
             if (result.GetType() == typeof(StatusCodeResult)) {
@@ -27,7 +27,7 @@ namespace API {
                 if (result.StatusCode.HasValue) {
                     message += ": " + result.StatusCode.Value.ToString();
                 }
-                if(result.Value != null) {
+                if (result.Value != null) {
                     message += ": " + result.Value.ToString();
                 }
                 _loggingService.Log(message, EventType.ERROR);
@@ -36,7 +36,7 @@ namespace API {
         }
 
         private IActionResult PassStatusCodeResult(StatusCodeResult result, string controller, string method) {
-            if(!ResponseValidator.IsSuccess((int)result.StatusCode)) {
+            if (!ResponseValidator.IsSuccess((int)result.StatusCode)) {
                 string message = controller + ", " + method + ": " + result.StatusCode.ToString();
                 _loggingService.Log(message, EventType.ERROR);
             }

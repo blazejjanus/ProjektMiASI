@@ -3,7 +3,7 @@ using DB;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
-using Shared;
+using Shared.Configuration;
 
 namespace Services.Services {
     public class ImageService : IImageService {
@@ -59,15 +59,15 @@ namespace Services.Services {
             byte[] content = Array.Empty<byte>();
             try {
                 content = ConvertImage(image);
-            }catch(Exception exc) {
-                if(exc is ArgumentException) {
+            } catch (Exception exc) {
+                if (exc is ArgumentException) {
                     return new ObjectResult(exc.Message) { StatusCode = StatusCodes.Status400BadRequest };
                 } else {
                     throw new Exception("Cannot convert provided image to database format!", exc);
                 }
             }
             using (var context = new DataContext(Config)) {
-                if(!context.Cars.Any(x => x.ID == CarID)) {
+                if (!context.Cars.Any(x => x.ID == CarID)) {
                     return new ObjectResult("Cannot find car with provided ID!") { StatusCode = StatusCodes.Status404NotFound };
                 }
                 var dbo = new ImageDBO() {
@@ -76,7 +76,7 @@ namespace Services.Services {
                 };
                 switch (isMain) {
                     case null:
-                        if(!context.Images.Any(x => x.Car.ID == CarID && x.IsMain == true)) {
+                        if (!context.Images.Any(x => x.Car.ID == CarID && x.IsMain == true)) {
                             dbo.IsMain = true;
                         }
                         break;
@@ -88,7 +88,7 @@ namespace Services.Services {
                         }
                         break;
                     case false:
-                        if(!context.Images.Any(x => x.Car.ID == CarID && x.IsMain == true)) {
+                        if (!context.Images.Any(x => x.Car.ID == CarID && x.IsMain == true)) {
                             return new ObjectResult("You specified the image not to be main, but this car has no mainimage! Set main image first, set isMain header to true or leave it empty.") { StatusCode = StatusCodes.Status409Conflict };
                         }
                         break;
@@ -101,7 +101,7 @@ namespace Services.Services {
 
         public IActionResult DeleteImage(int ImageID) {
             using (var context = new DataContext(Config)) {
-                if(context.Images.Any(x => x.ID == ImageID)) {
+                if (context.Images.Any(x => x.ID == ImageID)) {
                     var image = context.Images.Single(x => x.ID == ImageID);
                     context.Images.Remove(image);
                     context.SaveChanges();
@@ -124,7 +124,7 @@ namespace Services.Services {
                 }
             }
             using (var context = new DataContext(Config)) {
-                if(context.Images.Any(x => x.ID == ImageID)) {
+                if (context.Images.Any(x => x.ID == ImageID)) {
                     var dbo = context.Images.Single(x => x.ID == ImageID);
                     dbo.Content = content;
                     dbo.LastUpdate = DateTime.Now;
@@ -137,8 +137,8 @@ namespace Services.Services {
         }
 
         private byte[] ConvertImage(IFormFile image) {
-            if(image == null || image.Length <= 0) throw new ArgumentException("Provided image is null or empty!");
-            using(var memoryStream = new MemoryStream()) {
+            if (image == null || image.Length <= 0) throw new ArgumentException("Provided image is null or empty!");
+            using (var memoryStream = new MemoryStream()) {
                 image.CopyTo(memoryStream);
                 return memoryStream.ToArray();
             }

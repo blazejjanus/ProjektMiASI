@@ -17,7 +17,9 @@ namespace DB.DBO {
         [MaxLength(50)]
         public virtual string Surname { get; set; }
         [Required]
-        public virtual string Password { get; set; }
+        public virtual string PasswordHash { get; set; }
+        [Required]
+        public virtual string PasswordSalt { get; set; }
         [Required]
         public virtual UserType UserType { get; set; }
         [ForeignKey("AddressID")]
@@ -27,7 +29,8 @@ namespace DB.DBO {
             Email = string.Empty;
             Name = string.Empty;
             Surname = string.Empty;
-            Password = string.Empty;
+            PasswordHash = string.Empty;
+            PasswordSalt = string.Empty;
             UserType = UserType.CUSTOMER;
             Address = new AddressDBO();
         }

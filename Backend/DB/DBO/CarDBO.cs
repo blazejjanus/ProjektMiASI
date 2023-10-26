@@ -41,6 +41,8 @@ namespace DB.DBO {
             Brand = string.Empty;
             Model = string.Empty;
             RegistrationNumber = string.Empty;
+            ShortDescription = string.Empty;
+            LongDescription = string.Empty;
             IsOperational = true;
         }
     }
