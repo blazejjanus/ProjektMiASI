@@ -1,12 +1,15 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using Shared.Interfaces;
 
-namespace Shared {
-    public class Config {
+namespace Shared.Configuration {
+    public class Config : IConfigValidation {
         [JsonPropertyName("IsDevelopmentEnvironment")]
         public bool IsDevelopmentEnvironment { get; set; }
         [JsonPropertyName("JWT")]
         public JWTConfig JWT { get; set; }
+        [JsonPropertyName("Hashing")]
+        public HashingConfig Hashing { get; set; }
         [JsonPropertyName("ConnectionString")]
         public string ConnectionString { get; set; }
         [JsonPropertyName("UseLogFile")]
@@ -14,8 +17,9 @@ namespace Shared {
         [JsonIgnore]
         public bool IsJWTValid => JWT.IsValid;
 
-        public Config() { 
+        public Config() {
             JWT = new JWTConfig();
+            Hashing = new HashingConfig();
             ConnectionString = string.Empty;
             IsDevelopmentEnvironment = false;
         }
@@ -24,16 +28,17 @@ namespace Shared {
             var env = Environment.GetInstance();
             if (!File.Exists(env.ConfigFilePath)) throw new FileNotFoundException(env.ConfigFilePath);
             string json = File.ReadAllText(env.ConfigFilePath);
-            if(string.IsNullOrEmpty(json)) { throw new Exception("Obtained json config was empty!"); }
+            if (string.IsNullOrEmpty(json)) { throw new Exception("Obtained json config was empty!"); }
             var config = JsonSerializer.Deserialize<Config>(json);
-            if(config == null) { throw new Exception("Deserialized config was null!"); }
-            if(config.JWT == null) { throw new Exception("Cannot Deserialize JWT config!"); }
+            if (config == null) { throw new Exception("Deserialized config was null!"); }
+            if (config.JWT == null) { throw new Exception("Cannot Deserialize JWT config!"); }
             config.AdjustConnectionString();
+
             return config;
         }
 
         public static void WriteDefaultConfig(string? path = null) {
-            if(path == null) {
+            if (path == null) {
                 path = Environment.GetInstance().ConfigFilePath;
             }
             var config = new Config();
@@ -50,6 +55,11 @@ namespace Shared {
 
         public string ToJson() {
             return JsonSerializer.Serialize(this, new JsonSerializerOptions() { WriteIndented = true });
+        }
+
+        public void ValidateConfig() {
+            JWT.ValidateConfig();
+            Hashing.ValidateConfig();
         }
     }
 }

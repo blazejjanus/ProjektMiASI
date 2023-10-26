@@ -1,7 +1,7 @@
 ﻿using DB;
 using DB.DBO;
 using Services.Interfaces;
-using Shared;
+using Shared.Configuration;
 using Shared.Enums;
 
 namespace Services.Services {
@@ -30,12 +30,12 @@ namespace Services.Services {
 
         public void Log(Exception exc, string? message = null) {
             var text = string.Empty;
-            if(message != null) {
+            if (message != null) {
                 text += message + ": ";
             }
             text += exc.ToString();
             Display(text, EventType.ERROR);
-            if(Config.UseLogFile) {
+            if (Config.UseLogFile) {
                 LogFile(EventType.ERROR.ToString() + ": " + text);
             }
             LogDatabase(exc, message);
@@ -43,7 +43,7 @@ namespace Services.Services {
 
 
         private void LogFile(string message) {
-            if(!message.EndsWith(System.Environment.NewLine)) {
+            if (!message.EndsWith(System.Environment.NewLine)) {
                 message += System.Environment.NewLine;
             }
             File.AppendAllTextAsync(LogFileName, DateTime.Now.ToString("yyyy-MM-dd HH:mm") + ": " + message);
@@ -51,7 +51,7 @@ namespace Services.Services {
 
         private void LogDatabase(string message, EventType type) {
             var dbo = new EventDBO(message, type);
-            using(var ctx = new DataContext(Config)) {
+            using (var ctx = new DataContext(Config)) {
                 ctx.Events.Add(dbo);
                 ctx.SaveChanges();
             }
@@ -84,9 +84,9 @@ namespace Services.Services {
         private string GenLogFileName() {
             string file = DateTime.Now.ToString("yyyy_MM_dd_HH_mm");
             if (File.Exists(Path.Combine(Environment.LogPath, file + ".log"))) {
-                for(int i = 0; i < int.MaxValue; i++) {
+                for (int i = 0; i < int.MaxValue; i++) {
                     string temp = file + "_" + i;
-                    if(!File.Exists(Path.Combine(Environment.LogPath, temp + ".log"))){
+                    if (!File.Exists(Path.Combine(Environment.LogPath, temp + ".log"))) {
                         file = temp; break;
                     }
                 }

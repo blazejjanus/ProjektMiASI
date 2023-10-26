@@ -1,6 +1,6 @@
 ﻿using DB.DBO;
 using Microsoft.EntityFrameworkCore;
-using Shared;
+using Shared.Configuration;
 
 namespace DB {
     public class DataContext : DbContext {
@@ -15,7 +15,7 @@ namespace DB {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             if (!optionsBuilder.IsConfigured) {
                 Config config;
-                if(Config != null) {
+                if (Config != null) {
                     config = Config;
                 } else {
                     config = Config.ReadConfig();
@@ -25,8 +25,8 @@ namespace DB {
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
-            modelBuilder.Entity<UserDBO>().HasOne(x => x.Address).WithOne().OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<JwtDBO>().HasOne(x => x.User).WithOne().OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<UserDBO>().HasOne(x => x.Address).WithOne().OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<JwtDBO>().HasOne(x => x.User).WithOne().OnDelete(DeleteBehavior.Restrict);
             base.OnModelCreating(modelBuilder);
         }
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace Shared {
+namespace Shared.Validation {
     public static class ResponseValidator {
         public static bool IsSuccess(HttpStatusCode code) {
             if ((int)code >= 200 && (int)code < 300) {
@@ -18,7 +18,7 @@ namespace Shared {
         }
 
         public static bool IsSuccess(int? code) {
-            if(code == null) {
+            if (code == null) {
                 return false;
             }
             if (code >= 200 && code < 300) {
@@ -27,10 +27,10 @@ namespace Shared {
             return false;
         }
 
-        public static bool IsHttpResponseValid(IActionResult result) { 
-            if(result is ObjectResult)
+        public static bool IsHttpResponseValid(IActionResult result) {
+            if (result is ObjectResult)
                 return IsSuccess(((ObjectResult)result).StatusCode);
-            if(result is StatusCodeResult)
+            if (result is StatusCodeResult)
                 return IsSuccess(((StatusCodeResult)result).StatusCode);
             if (result is FileContentResult)
                 return true;

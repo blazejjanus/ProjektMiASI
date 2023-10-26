@@ -1,7 +1,9 @@
 ﻿using System.Text.Json.Serialization;
+using Shared.Exceptions;
+using Shared.Interfaces;
 
-namespace Shared {
-    public class JWTConfig {
+namespace Shared.Configuration {
+    public class JWTConfig : IConfigValidation {
         /// <summary>
         /// Number of days the token will be valid after generation
         /// </summary>
@@ -19,7 +21,7 @@ namespace Shared {
         /// </summary>
         public string SecretKey { get; set; }
 
-        public JWTConfig() { 
+        public JWTConfig() {
             SecretKey = string.Empty;
         }
 
@@ -29,11 +31,17 @@ namespace Shared {
                 if (string.IsNullOrEmpty(SecretKey) || SecretKey.Length < 64) {
                     return false;
                 }
-                if(DaysValid < 1) {
+                if (DaysValid < 1) {
                     return false;
                 }
                 return true;
             }
+        }
+
+        public void ValidateConfig() {
+            if (string.IsNullOrEmpty(SecretKey)) throw new ConfigException("JWT SecretKey is empty!");
+            if (SecretKey.Length < 64) throw new ConfigException("JWT SecretKey is too short! Minimal SecretKey length is 64.");
+            if (DaysValid <= 0) throw new ConfigException("JWT DaysValid is invalid! Minimal value is 1.");
         }
     }
 }

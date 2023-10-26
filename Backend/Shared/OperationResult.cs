@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Shared.Validation;
 using System.Net;
 
-namespace Shared {
+namespace Shared
+{
     public class OperationResult {
         public bool IsSuccess { get; set; }
         public HttpStatusCode HttpStatus { get; set; }

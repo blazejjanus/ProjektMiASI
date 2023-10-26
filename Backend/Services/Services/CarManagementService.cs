@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.DTO;
 using Services.Interfaces;
-using Shared;
 using Services.Utils;
+using Shared.Configuration;
 
 namespace Services.Services {
     public class CarManagementService : ICarManagementService {
@@ -41,8 +41,8 @@ namespace Services.Services {
         }
 
         public IActionResult EditCar(CarDTO car) {
-            using(var context = new DataContext(Config)) {
-                if(context.Cars.Any(x => x.ID == car.ID)) {
+            using (var context = new DataContext(Config)) {
+                if (context.Cars.Any(x => x.ID == car.ID)) {
                     var dbo = (context.Cars.Single(x => x.ID == car.ID));
                     dbo.SeatsNumber = car.SeatsNumber;
                     dbo.RegistrationNumber = car.RegistrationNumber;
@@ -58,8 +58,8 @@ namespace Services.Services {
         }
 
         public IActionResult GetCarByID(int ID) {
-            using(var context = new DataContext(Config)) {
-                if(context.Cars.Any(x => x.ID == ID)) {
+            using (var context = new DataContext(Config)) {
+                if (context.Cars.Any(x => x.ID == ID)) {
                     var dbo = context.Cars.Single(x => x.ID == ID);
                     return new ObjectResult(Mapper.Get().Map<CarDTO>(dbo)) { StatusCode = StatusCodes.Status200OK };
                 } else {
