@@ -35,6 +35,7 @@ namespace API {
                 app.UseHttpsRedirection();
                 app.UseAuthorization();
                 app.MapControllers();
+                app.UseCors(app => app.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
                 app.Run();
             } catch(Exception exc) {
                 Console.WriteLine("Exception occured during startup: " + exc.ToString());
