@@ -20,12 +20,12 @@ namespace API.Controllers {
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult Login([FromHeader] string username, [FromHeader] string password) {
+        public IActionResult Login([FromHeader] string email, [FromHeader] string password) {
             try {
-                return Result.Pass(_loginService.Login(username, password), "LoginController", "Login");
+                return Result.Pass(_loginService.Login(email, password), "LoginController", "Login");
             } catch (Exception exc) {
                 _loggingService.Log(exc, "LoginController:Login");
-                return new StatusCodeResult(500);
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -38,7 +38,7 @@ namespace API.Controllers {
                 return Result.Pass(_loginService.Register(user), "LoginController", "Register");
             } catch (Exception exc) {
                 _loggingService.Log(exc, "LoginController:Register");
-                return new StatusCodeResult(500);
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }
     }

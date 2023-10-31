@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace API.Controllers {
     [ApiController]
@@ -28,7 +27,7 @@ namespace API.Controllers {
                 return Result.Pass(_imageService.GetCarMainImage(CarID), "ImageController", "GetCarMainImage");
             } catch (Exception exc) {
                 _loggingService.Log(exc, "ImageController:GetCarMainImage");
-                return new StatusCodeResult(500);
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -41,7 +40,7 @@ namespace API.Controllers {
                 return Result.Pass(_imageService.GetCarImages(CarID), "ImageController", "GetCarImages");
             } catch (Exception exc) {
                 _loggingService.Log(exc, "ImageController:GetCarImages");
-                return new StatusCodeResult(500);
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }
 

@@ -10,9 +10,8 @@ namespace DB.DBO {
         [MaxLength(64)]
         public virtual string Street { get; set; }
         [Required]
-        [MaxLength(8)]
+        [MaxLength(10)]
         public virtual string HouseNumber { get; set; }
-        public virtual int? ApartmentNumber { get; set; }
         [Required]
         [MaxLength(8)]
         public virtual string PostalCode { get; set; }
@@ -24,13 +23,11 @@ namespace DB.DBO {
             first.City == second.City &&
             first.PostalCode == second.PostalCode &&
             first.Street == second.Street &&
-            first.HouseNumber == second.HouseNumber &&
-            first.ApartmentNumber == second.ApartmentNumber;
+            first.HouseNumber == second.HouseNumber;
 
         public AddressDBO() {
             Street = string.Empty;
             HouseNumber = string.Empty;
-            ApartmentNumber = null;
             PostalCode = string.Empty;
             City = string.Empty;
         }

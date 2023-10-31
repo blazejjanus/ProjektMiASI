@@ -29,7 +29,7 @@ namespace API.Controllers {
                 return Result.Pass(_carManagementService.GetCarByID(ID), "CarManagementController", "GetCarByID");
             } catch (Exception exc) {
                 _loggingService.Log(exc, "CarManagementController:GetCarByID");
-                return new StatusCodeResult(500);
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -42,7 +42,7 @@ namespace API.Controllers {
                 return Result.Pass(_carManagementService.GetCarRegistrationNumber(registrationNumber), "CarManagementController", "GetCarByRegistrationNumber");
             } catch (Exception exc) {
                 _loggingService.Log(exc, "CarManagementController:GetCarByRegistrationNumber");
-                return new StatusCodeResult(500);
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }
         #endregion
@@ -57,16 +57,16 @@ namespace API.Controllers {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
                     _loggingService.Log("CarManagementController:AddCar: 401", Shared.Enums.EventType.ERROR);
-                    return new StatusCodeResult(401);
+                    return new StatusCodeResult(StatusCodes.Status401Unauthorized);
                 }
                 if (!_authenticationService.IsUserType(jwt, Shared.Enums.UserType.EMPLOYEE)) {
                     _loggingService.Log("CarManagementController:AddCar: 403", Shared.Enums.EventType.ERROR);
-                    return new StatusCodeResult(403);
+                    return new StatusCodeResult(StatusCodes.Status403Forbidden);
                 }
                 return Result.Pass(_carManagementService.AddCar(car), "CarManagementController", "AddCar");
             } catch (Exception exc) {
                 _loggingService.Log(exc, "CarManagementController:AddCar");
-                return new StatusCodeResult(500);
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -80,16 +80,16 @@ namespace API.Controllers {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
                     _loggingService.Log("CarManagementController:UpdateCar: 401", Shared.Enums.EventType.ERROR);
-                    return new StatusCodeResult(401);
+                    return new StatusCodeResult(StatusCodes.Status401Unauthorized);
                 }
                 if(!_authenticationService.IsUserType(jwt, Shared.Enums.UserType.EMPLOYEE)) {
                     _loggingService.Log("CarManagementController:UpdateCar: 403", Shared.Enums.EventType.ERROR);
-                    return new StatusCodeResult(403);
+                    return new StatusCodeResult(StatusCodes.Status403Forbidden);
                 }
                 return Result.Pass(_carManagementService.EditCar(car), "CarManagementController", "UpdateCar");
             } catch (Exception exc) {
                 _loggingService.Log(exc, "CarManagementController:UpdateCar");
-                return new StatusCodeResult(500);
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -103,16 +103,16 @@ namespace API.Controllers {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
                     _loggingService.Log("CarManagementController:DeleteCar: 401", Shared.Enums.EventType.ERROR);
-                    return new StatusCodeResult(401);
+                    return new StatusCodeResult(StatusCodes.Status401Unauthorized);
                 }
                 if (!_authenticationService.IsUserType(jwt, Shared.Enums.UserType.EMPLOYEE)) {
                     _loggingService.Log("CarManagementController:DeleteCar: 403", Shared.Enums.EventType.ERROR);
-                    return new StatusCodeResult(403);
+                    return new StatusCodeResult(StatusCodes.Status403Forbidden);
                 }
                 return Result.Pass(_carManagementService.DeleteCar(ID), "CarManagementController", "DeleteCar");
             } catch (Exception exc) {
                 _loggingService.Log(exc, "CarManagementController:DeleteCar");
-                return new StatusCodeResult(500);
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }
         #endregion
