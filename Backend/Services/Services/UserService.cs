@@ -67,7 +67,12 @@ namespace Services.Services {
                     dbo.Email = user.Email;
                     dbo.Name = user.Name;
                     dbo.Surname = user.Surname;
-                    dbo.PasswordHash = user.Password;
+                    //Hash password
+                    using (var hashingHelper = new HashingHelper(Config)) {
+                        var result = hashingHelper.HashPassword(user.Password);
+                        dbo.PasswordHash = result.Hash;
+                        dbo.PasswordSalt = result.Salt;
+                    }
                     context.SaveChanges();
                     return new StatusCodeResult(StatusCodes.Status200OK);
                 } else {

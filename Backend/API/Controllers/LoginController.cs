@@ -16,7 +16,7 @@ namespace API.Controllers {
             Result = new ResultTranslation(_loggingService);
         }
 
-        [HttpGet("Login")]
+        [HttpPost("Login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
