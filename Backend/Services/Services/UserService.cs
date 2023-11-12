@@ -62,16 +62,21 @@ namespace Services.Services {
 
         public IActionResult ModifyUser(UserDTO user) {
             using (var context = new DataContext(Config)) {
-                if (context.Users.Any(x => x.Email == user.Email)) {
-                    UserDBO dbo = context.Users.Single(x => x.Email == user.Email);
-                    dbo.Email = user.Email;
-                    dbo.Name = user.Name;
-                    dbo.Surname = user.Surname;
-                    //Hash password
-                    using (var hashingHelper = new HashingHelper(Config)) {
-                        var result = hashingHelper.HashPassword(user.Password);
-                        dbo.PasswordHash = result.Hash;
-                        dbo.PasswordSalt = result.Salt;
+                if (context.Users.Any(x => x.ID == user.ID)) {
+                    UserDBO dbo = context.Users.Single(x => x.ID == user.ID);
+                    if (!string.IsNullOrEmpty(user.Email)) dbo.Email = user.Email;
+                    if (!string.IsNullOrEmpty(user.Name)) dbo.Name = user.Name;
+                    if (!string.IsNullOrEmpty(user.Surname)) dbo.Surname = user.Surname;
+                    if (!string.IsNullOrEmpty(user.Password)) {
+                        //Hash password
+                        using (var hashingHelper = new HashingHelper(Config)) {
+                            var result = hashingHelper.HashPassword(user.Password);
+                            dbo.PasswordHash = result.Hash;
+                            dbo.PasswordSalt = result.Salt;
+                        }
+                    }
+                    if(user.Address != null && (!user.Address?.Equals(dbo.Address) ?? false)) {
+                        dbo.Address = Mapper.Get().Map<AddressDBO>(user.Address);
                     }
                     context.SaveChanges();
                     return new StatusCodeResult(StatusCodes.Status200OK);

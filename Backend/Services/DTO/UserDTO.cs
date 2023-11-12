@@ -8,7 +8,7 @@ namespace Services.DTO {
         public string Surname { get; set; }
         public string Password { get; set; }
         public UserType UserType { get; set; }
-        public AddressDTO Address { get; set; }
+        public AddressDTO? Address { get; set; }
 
         public UserDTO() { 
             Email = string.Empty;
