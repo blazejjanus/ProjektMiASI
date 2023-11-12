@@ -52,7 +52,7 @@ namespace API.Controllers {
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult AddCarImage([FromRoute] int CarID, [FromForm] IFormFile image, [FromHeader] string jwt, [FromHeader] bool? isMain = null) {
+        public IActionResult AddCarImage([FromRoute] int CarID, [FromBody] string imageContent, [FromHeader] string jwt, [FromHeader] bool? isMain = null) {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
                     _loggingService.Log("ImageController:AddCarImage: 401", Shared.Enums.EventType.ERROR);
@@ -62,7 +62,7 @@ namespace API.Controllers {
                     _loggingService.Log("ImageController:AddCarImage: 403", Shared.Enums.EventType.ERROR);
                     return new StatusCodeResult(StatusCodes.Status403Forbidden);
                 }
-                return Result.Pass(_imageService.AddCarImage(CarID, image, isMain), "ImageController", "AddCarImage");
+                return Result.Pass(_imageService.AddCarImage(CarID, imageContent, isMain), "ImageController", "AddCarImage");
             } catch (Exception exc) {
                 _loggingService.Log(exc, "ImageController:AddCarImage");
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
@@ -98,7 +98,7 @@ namespace API.Controllers {
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult EditImage([FromRoute] int ImageID, [FromForm] IFormFile image, [FromHeader] string jwt) {
+        public IActionResult EditImage([FromRoute] int ImageID, [FromBody] string imageContent, [FromHeader] string jwt) {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
                     _loggingService.Log("ImageController:AddCarImage: 401", Shared.Enums.EventType.ERROR);
@@ -108,7 +108,7 @@ namespace API.Controllers {
                     _loggingService.Log("ImageController:AddCarImage: 403", Shared.Enums.EventType.ERROR);
                     return new StatusCodeResult(StatusCodes.Status403Forbidden);
                 }
-                return Result.Pass(_imageService.EditImage(ImageID, image), "ImageController", "AddCarImage");
+                return Result.Pass(_imageService.EditImage(ImageID, imageContent), "ImageController", "AddCarImage");
             } catch (Exception exc) {
                 _loggingService.Log(exc, "ImageController:AddCarImage");
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);

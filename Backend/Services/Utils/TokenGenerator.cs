@@ -24,7 +24,11 @@ namespace Services.Utils {
             var claims = new[] {
                 new Claim(JwtRegisteredClaimNames.Sub, user.ID.ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, intIAT.ToString()),
-                new Claim(JwtRegisteredClaimNames.Exp, intEXP.ToString())
+                new Claim(JwtRegisteredClaimNames.Exp, intEXP.ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(JwtRegisteredClaimNames.GivenName, user.Name),
+                new Claim(JwtRegisteredClaimNames.FamilyName, user.Surname),
+                new Claim("role", user.UserType.ToString().ToLower()),
             };
             var jwtToken = new JwtSecurityToken(Config.JWT.Issuer,
                 Config.JWT.Audience ?? "", claims,
