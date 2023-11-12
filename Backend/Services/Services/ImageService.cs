@@ -19,7 +19,7 @@ namespace Services.Services {
                     var car = context.Cars.Single(x => x.ID == CarID);
                     if (context.Images.Any(x => x.Car.ID == car.ID && x.IsMain == true)) {
                         var image = context.Images.Single(x => x.Car.ID == car.ID && x.IsMain == true);
-                        return new FileContentResult(image.Content, "image/jpeg");
+                        return new ObjectResult(Convert.ToBase64String(image.Content)) { StatusCode =  StatusCodes.Status200OK};
                     } else {
                         return new StatusCodeResult(StatusCodes.Status404NotFound);
                     }
@@ -41,9 +41,9 @@ namespace Services.Services {
                         } else {
                             images.AddRange(context.Images.Where(x => x.Car.ID == car.ID).ToList());
                         }
-                        List<FileContentResult> results = new List<FileContentResult>();
+                        List<string> results = new List<string>();
                         foreach (var image in images) {
-                            results.Add(new FileContentResult(image.Content, "image/jpeg"));
+                            results.Add(Convert.ToBase64String(image.Content));
                         }
                         return new ObjectResult(results) { StatusCode = 200 };
                     } else {
@@ -55,10 +55,10 @@ namespace Services.Services {
             }
         }
 
-        public IActionResult AddCarImage(int CarID, IFormFile image, bool? isMain = null) {
+        public IActionResult AddCarImage(int CarID, string imageContent, bool? isMain = null) {
             byte[] content = Array.Empty<byte>();
             try {
-                content = ConvertImage(image);
+                content = Convert.FromBase64String(imageContent);
             } catch (Exception exc) {
                 if (exc is ArgumentException) {
                     return new ObjectResult(exc.Message) { StatusCode = StatusCodes.Status400BadRequest };
@@ -112,10 +112,10 @@ namespace Services.Services {
             }
         }
 
-        public IActionResult EditImage(int ImageID, IFormFile image) {
+        public IActionResult EditImage(int ImageID, string imageContent) {
             byte[] content = Array.Empty<byte>();
             try {
-                content = ConvertImage(image);
+                content = Convert.FromBase64String(imageContent);
             } catch (Exception exc) {
                 if (exc is ArgumentException) {
                     return new ObjectResult(exc.Message) { StatusCode = StatusCodes.Status400BadRequest };
@@ -133,14 +133,6 @@ namespace Services.Services {
                 } else {
                     return new StatusCodeResult(StatusCodes.Status404NotFound);
                 }
-            }
-        }
-
-        private byte[] ConvertImage(IFormFile image) {
-            if (image == null || image.Length <= 0) throw new ArgumentException("Provided image is null or empty!");
-            using (var memoryStream = new MemoryStream()) {
-                image.CopyTo(memoryStream);
-                return memoryStream.ToArray();
             }
         }
     }
