@@ -68,7 +68,7 @@ namespace Services.Services {
 
         public bool IsUserType(string jwt, UserType userType) {
             var user = GetUser(jwt);
-            if (user.UserType >= userType) {
+            if (user.UserType <= userType) {
                 return true;
             }
             return false;
