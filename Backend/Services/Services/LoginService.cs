@@ -60,22 +60,23 @@ namespace Services.Services {
                     UserDBO user = context.Users.Single(x => x.Email == email);
                     var passwordHash = new HashingHelper(Config).HashPassword(password.Trim(), user.PasswordSalt);
                     if (user.PasswordHash == passwordHash) {
-                        string? token = null;
+                        JwtDBO? token = null;
                         if (context.Jwt.Any(x => x.User.ID == user.ID)) {
                             var userTokens = context.Jwt.Where(x => x.User.ID == user.ID).ToList();
                             foreach (var userToken in userTokens) {
                                 if (!_authenticationService.CheckJwtValid(userToken.JWT)) {
                                     userToken.Active = false; //Deactivate expired token
                                 } else {
-                                    token = userToken.JWT;
-                                    break;
+                                    if(token == null) {
+                                        token = new JwtDBO() { JWT = userToken.JWT };
+                                    }
                                 }
                             }
                         }
                         if (token == null) {
-                            token = Generator.UserToken(user);
+                            token = new JwtDBO() { JWT = Generator.UserToken(user) };
                         }
-                        return new ObjectResult(token) { StatusCode = StatusCodes.Status200OK };
+                        return new ObjectResult(token.JWT) { StatusCode = StatusCodes.Status200OK };
                     } else {
                         return new ObjectResult("Wrong username or password!") { StatusCode = StatusCodes.Status401Unauthorized };
                     }
