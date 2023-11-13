@@ -38,32 +38,60 @@ namespace Services.Services {
             }
         }
 
-        public IActionResult GetUser(int ID) {
+        public IActionResult GetUser(int ID, bool includeDeleted = false) {
             using (var context = new DataContext(Config)) {
-                if (context.Users.Any(x => x.ID == ID)) {
-                    UserDBO dbo = context.Users.Single(x => x.ID == ID);
-                    return new ObjectResult(Mapper.Get().Map<UserDTO>(dbo)) { StatusCode = StatusCodes.Status200OK };
+                if (includeDeleted) {
+                    if (context.Users.Any(x => x.ID == ID)) {
+                        UserDBO dbo = context.Users.Single(x => x.ID == ID);
+                        return new ObjectResult(Mapper.Get().Map<UserDTO>(dbo)) { StatusCode = StatusCodes.Status200OK };
+                    } else {
+                        return new StatusCodeResult(StatusCodes.Status404NotFound);
+                    }
                 } else {
-                    return new StatusCodeResult(StatusCodes.Status404NotFound);
+                    if (context.Users.Any(x => x.ID == ID && !x.IsDeleted)) {
+                        UserDBO dbo = context.Users.Single(x => x.ID == ID && !x.IsDeleted);
+                        return new ObjectResult(Mapper.Get().Map<UserDTO>(dbo)) { StatusCode = StatusCodes.Status200OK };
+                    } else {
+                        return new StatusCodeResult(StatusCodes.Status404NotFound);
+                    }
                 }
             }
         }
 
-        public IActionResult GetUser(string email) {
+        public IActionResult GetUser(string email, bool includeDeleted = false) {
             using (var context = new DataContext(Config)) {
-                if (context.Users.Any(x => x.Email == email)) {
-                    UserDBO dbo = context.Users.Single(x => x.Email == email);
-                    return new ObjectResult(Mapper.Get().Map<UserDTO>(dbo)) { StatusCode = StatusCodes.Status200OK };
+                if (includeDeleted) {
+                    if (context.Users.Any(x => x.Email == email)) {
+                        UserDBO dbo = context.Users.Single(x => x.Email == email);
+                        return new ObjectResult(Mapper.Get().Map<UserDTO>(dbo)) { StatusCode = StatusCodes.Status200OK };
+                    } else {
+                        return new StatusCodeResult(StatusCodes.Status404NotFound);
+                    }
                 } else {
-                    return new StatusCodeResult(StatusCodes.Status404NotFound);
+                    if (context.Users.Any(x => x.Email == email && !x.IsDeleted)) {
+                        UserDBO dbo = context.Users.Single(x => x.Email == email && !x.IsDeleted);
+                        return new ObjectResult(Mapper.Get().Map<UserDTO>(dbo)) { StatusCode = StatusCodes.Status200OK };
+                    } else {
+                        return new StatusCodeResult(StatusCodes.Status404NotFound);
+                    }
+                }
+            }
+        }
+
+        public IActionResult GetAllUsers(bool includeDeleted = false) {
+            using (var context = new DataContext(Config)) {
+                if (includeDeleted) {
+                    return new ObjectResult(Mapper.Get().Map<List<UserDTO>>(context.Users.ToList())) { StatusCode = 200 };
+                } else {
+                    return new ObjectResult(Mapper.Get().Map<List<UserDTO>>(context.Users.Where(x => !x.IsDeleted).ToList())) { StatusCode = 200 };
                 }
             }
         }
 
         public IActionResult ModifyUser(UserDTO user) {
             using (var context = new DataContext(Config)) {
-                if (context.Users.Any(x => x.ID == user.ID)) {
-                    UserDBO dbo = context.Users.Single(x => x.ID == user.ID);
+                if (context.Users.Any(x => x.ID == user.ID && !x.IsDeleted)) {
+                    UserDBO dbo = context.Users.Single(x => x.ID == user.ID && !x.IsDeleted);
                     if (!string.IsNullOrEmpty(user.Email)) dbo.Email = user.Email;
                     if (!string.IsNullOrEmpty(user.Name)) dbo.Name = user.Name;
                     if (!string.IsNullOrEmpty(user.Surname)) dbo.Surname = user.Surname;
@@ -91,11 +119,15 @@ namespace Services.Services {
             }
         }
 
-        public IActionResult RemoveUser(string email) {
+        public IActionResult RemoveUser(string email, bool hard = false) {
             using (var context = new DataContext(Config)) {
-                if (context.Users.Any(x => x.Email == email)) {
-                    UserDBO dbo = context.Users.Single(x => x.Email == email);
-                    context.Users.Remove(dbo);
+                if (context.Users.Any(x => x.Email == email && !x.IsDeleted)) {
+                    UserDBO dbo = context.Users.Single(x => x.Email == email && !x.IsDeleted);
+                    if (hard) {
+                        context.Users.Remove(dbo);
+                    } else {
+                        dbo.IsDeleted = true;
+                    }
                     context.SaveChanges();
                     return new StatusCodeResult(StatusCodes.Status200OK);
                 } else {
@@ -104,11 +136,15 @@ namespace Services.Services {
             }
         }
 
-        public IActionResult RemoveUser(int ID) {
+        public IActionResult RemoveUser(int ID, bool hard = false) {
             using (var context = new DataContext(Config)) {
                 if (context.Users.Any(x => x.ID == ID)) {
                     UserDBO dbo = context.Users.Single(x => x.ID == ID);
-                    context.Users.Remove(dbo);
+                    if (hard) {
+                        context.Users.Remove(dbo);
+                    } else {
+                        dbo.IsDeleted = true;
+                    }
                     context.SaveChanges();
                     return new StatusCodeResult(StatusCodes.Status200OK);
                 } else {

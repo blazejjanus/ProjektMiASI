@@ -9,6 +9,7 @@ namespace Services.DTO {
         public string Password { get; set; }
         public UserType UserType { get; set; }
         public AddressDTO? Address { get; set; }
+        public bool IsDeleted { get; set; }
 
         public UserDTO() { 
             Email = string.Empty;
@@ -16,6 +17,7 @@ namespace Services.DTO {
             Surname = string.Empty;
             Password = string.Empty;
             UserType = UserType.CUSTOMER;
+            IsDeleted = false;
             Address = new AddressDTO();
         }
     }

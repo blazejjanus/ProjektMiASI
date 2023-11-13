@@ -24,13 +24,13 @@ namespace API.Controllers {
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult GetUserByID([FromRoute] int ID, [FromHeader] string jwt) {
+        public IActionResult GetUserByID([FromRoute] int ID, [FromHeader] string jwt, [FromHeader] bool includeDeleted = false) {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
                     _loggingService.Log("UserController:GetUserByID: 401", Shared.Enums.EventType.ERROR);
                     return new StatusCodeResult(StatusCodes.Status401Unauthorized);
                 }
-                return Result.Pass(_userService.GetUser(ID), "UserController", "GetUserByID");
+                return Result.Pass(_userService.GetUser(ID, includeDeleted), "UserController", "GetUserByID");
             } catch(Exception exc) {
                 _loggingService.Log(exc, "UserController:GetUserByID");
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
@@ -43,18 +43,40 @@ namespace API.Controllers {
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult GetUserByEmail([FromRoute] string Email, [FromHeader] string jwt) {
+        public IActionResult GetUserByEmail([FromRoute] string Email, [FromHeader] string jwt, [FromHeader] bool includeDeleted = false) {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
                     _loggingService.Log("UserController:GetUserByUsername: 401", Shared.Enums.EventType.ERROR);
                     return new StatusCodeResult(StatusCodes.Status401Unauthorized);
                 }
-                return Result.Pass(_userService.GetUser(Email), "UserController", "GetUserByID");
+                return Result.Pass(_userService.GetUser(Email, includeDeleted), "UserController", "GetUserByID");
             } catch (Exception exc) {
                 _loggingService.Log(exc, "UserController:GetUserByEmail");
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }
+
+        [HttpGet("GetAllUsers")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult GetAllUsers([FromHeader] string jwt, [FromHeader] bool includeDeleted = false) {
+            try {
+                if (!_authenticationService.IsValid(jwt)) {
+                    _loggingService.Log("UserController:GetAllUsers: 401", Shared.Enums.EventType.ERROR);
+                    return new StatusCodeResult(StatusCodes.Status401Unauthorized);
+                }
+                if(!_authenticationService.IsUserType(jwt, Shared.Enums.UserType.EMPLOYEE)) {
+                    _loggingService.Log("UserController:GetAllUsers: 403 - provided token is not a token of admin or employee.", Shared.Enums.EventType.ERROR);
+                    return new StatusCodeResult(StatusCodes.Status403Forbidden);
+                }
+                return Result.Pass(_userService.GetAllUsers(includeDeleted), "UserController", "GetAllUsers");
+            } catch (Exception exc) {
+                _loggingService.Log(exc, "UserController:GetAllUsers");
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+        }   
         #endregion
         #region Change User
         [HttpPost("AddUser")]

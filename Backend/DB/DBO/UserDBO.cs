@@ -24,6 +24,7 @@ namespace DB.DBO {
         public virtual UserType UserType { get; set; }
         [ForeignKey("AddressID")]
         public virtual AddressDBO Address { get; set; }
+        public virtual bool IsDeleted { get; set; }
 
         public UserDBO() {
             Email = string.Empty;
@@ -32,6 +33,7 @@ namespace DB.DBO {
             PasswordHash = string.Empty;
             PasswordSalt = string.Empty;
             UserType = UserType.CUSTOMER;
+            IsDeleted = false;
             Address = new AddressDBO();
         }
     }
