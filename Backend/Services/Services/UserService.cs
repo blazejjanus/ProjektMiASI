@@ -76,7 +76,12 @@ namespace Services.Services {
                         }
                     }
                     if(user.Address != null && (!user.Address?.Equals(dbo.Address) ?? false)) {
-                        dbo.Address = Mapper.Get().Map<AddressDBO>(user.Address);
+                        //Check if address exists in DB
+                        if (context.Address.AsEnumerable().Any(x => AddressDBO.Comparator(x, Mapper.Get().Map<AddressDBO>(user.Address)))) {
+                            dbo.Address = context.Address.AsEnumerable().Single(x => AddressDBO.Comparator(x, Mapper.Get().Map<AddressDBO>(user.Address)));
+                        } else {
+                            dbo.Address = Mapper.Get().Map<AddressDBO>(user.Address);
+                        }
                     }
                     context.SaveChanges();
                     return new StatusCodeResult(StatusCodes.Status200OK);
