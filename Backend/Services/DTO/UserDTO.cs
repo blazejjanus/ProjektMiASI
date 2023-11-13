@@ -10,6 +10,7 @@ namespace Services.DTO {
         public string Password { get; set; }
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public UserType UserType { get; set; }
+        public string PhoneNumber { get; set; }
         public AddressDTO? Address { get; set; }
         public bool IsDeleted { get; set; }
 
@@ -19,6 +20,7 @@ namespace Services.DTO {
             Surname = string.Empty;
             Password = string.Empty;
             UserType = UserType.CUSTOMER;
+            PhoneNumber = string.Empty;
             IsDeleted = false;
             Address = new AddressDTO();
         }
