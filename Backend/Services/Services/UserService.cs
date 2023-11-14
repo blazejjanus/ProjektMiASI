@@ -95,6 +95,7 @@ namespace Services.Services {
                     if (!string.IsNullOrEmpty(user.Email)) dbo.Email = user.Email;
                     if (!string.IsNullOrEmpty(user.Name)) dbo.Name = user.Name;
                     if (!string.IsNullOrEmpty(user.Surname)) dbo.Surname = user.Surname;
+                    if(!string.IsNullOrEmpty(user.PhoneNumber)) dbo.PhoneNumber = user.PhoneNumber;
                     if (!string.IsNullOrEmpty(user.Password)) {
                         //Hash password
                         using (var hashingHelper = new HashingHelper(Config)) {

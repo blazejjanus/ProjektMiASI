@@ -11,5 +11,7 @@ namespace Services.Interfaces {
         public UserDTO GetUser(string jwt);
         public int GetUserID(string jwt);
         public bool CheckJwtValid(string jwt);
+        public bool IsHigherType(string jwt, UserType userType);
+        public bool IsHigherType(string jwt, int userID);
     }
 }

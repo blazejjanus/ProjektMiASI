@@ -74,6 +74,25 @@ namespace Services.Services {
             return false;
         }
 
+        public bool IsHigherType(string jwt, UserType userType) {
+            var user = GetUser(jwt);
+            if (user.UserType < userType) {
+                return true;
+            }
+            return false;
+        }
+
+        public bool IsHigherType(string jwt, int userID) {
+            using (var context = new DataContext(Config)) {
+                if (context.Users.Any(x => x.ID == userID)) {
+                    var user = Mapper.Get().Map<UserDTO>(context.Users.Single(x => x.ID == userID));
+                    return IsHigherType(jwt, user.UserType);
+                } else {
+                    throw new Exception($"Provided JWT token points an user with ID {userID}. User with that ID was not found!");
+                }
+            }
+        }
+
         public bool IsValid(string jwt) {
             if (!CheckJwtValid(jwt)) {
                 return false;

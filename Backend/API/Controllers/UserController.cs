@@ -110,7 +110,7 @@ namespace API.Controllers {
                     _loggingService.Log("UserController:UpdateUser: 401", Shared.Enums.EventType.ERROR);
                     return new StatusCodeResult(StatusCodes.Status401Unauthorized);
                 }
-                if (!_authenticationService.IsUser(jwt, user.ID)) {
+                if (!_authenticationService.IsUser(jwt, user.ID) && !_authenticationService.IsHigherType(jwt, user.ID)) {
                     _loggingService.Log("UserController:UpdateUser: 403 - provided token is not a token of user being updated.", Shared.Enums.EventType.ERROR);
                     return new StatusCodeResult(StatusCodes.Status403Forbidden);
                 }
