@@ -78,5 +78,19 @@ namespace Services.Services {
                 }
             }
         }
+
+        public IActionResult GetAllCars(bool includeUnoperational = false, int? count = null, int? startIndex = null) {
+            using(var context = new DataContext(Config)) {
+                if (!includeUnoperational) {
+                    return new ObjectResult(Mapper.Get().Map<List<CarDTO>>(
+                        context.Cars.Where(x => x.IsOperational).ToList().Take(count ?? 100).Skip(startIndex ?? 0)
+                    )) { StatusCode = StatusCodes.Status200OK };
+                } else {
+                    return new ObjectResult(Mapper.Get().Map<List<CarDTO>>(
+                        context.Cars.ToList().Take(count ?? 100).Skip(startIndex ?? 0)
+                    )) { StatusCode = StatusCodes.Status200OK };
+                }
+            }
+        }
     }
 }

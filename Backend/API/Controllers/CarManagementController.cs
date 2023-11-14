@@ -45,6 +45,17 @@ namespace API.Controllers {
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }
+        [HttpGet("GetAllCars")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult GetAllCars([FromHeader] bool includeUnoperational = false, [FromHeader] int? count = null, [FromHeader] int? startIndex = null) {
+            try {
+                return Result.Pass(_carManagementService.GetAllCars(), "CarManagementController", "GetAllCars");
+            } catch (Exception exc) {
+                _loggingService.Log(exc, "CarManagementController:GetAllCars");
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+        }
         #endregion
         #region Car Management
         [HttpPost("AddCar")]
