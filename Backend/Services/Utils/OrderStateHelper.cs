@@ -1,4 +1,5 @@
-﻿using Services.DTO;
+﻿using DB.DBO;
+using Services.DTO;
 using Shared.Enums;
 using System;
 
@@ -20,6 +21,8 @@ namespace Services.Utils {
             return false;
         }
 
+        public static bool IsOrderState(OrderDBO order, OrderStates orderState) => IsOrderState(Mapper.Get().Map<OrderDTO>(order), orderState);
+
         public static OrderStates GetOrderState(OrderDTO order) {
             foreach(OrderStates state in Enum.GetValues(typeof(OrderStates))) {
                 if(IsOrderState(order, state)) {
@@ -28,5 +31,7 @@ namespace Services.Utils {
             }
             throw new Exception("Order state not found");
         }
+
+        public static OrderStates GetOrderState(OrderDBO order) => GetOrderState(Mapper.Get().Map<OrderDTO>(order));
     }
 }

@@ -4,6 +4,9 @@ using Services.DTO;
 using Services.Interfaces;
 
 namespace API.Controllers {
+    /// <summary>
+    /// Car management controller
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class CarManagementController : ControllerBase {
@@ -12,6 +15,12 @@ namespace API.Controllers {
         private readonly IAuthenticationService _authenticationService;
         private ResultTranslation Result { get; }
 
+        /// <summary>
+        /// CarManagementController constructor
+        /// </summary>
+        /// <param name="loggingService"></param>
+        /// <param name="carManagementService"></param>
+        /// <param name="authenticationService"></param>
         public CarManagementController(ILoggingService loggingService, ICarManagementService carManagementService, IAuthenticationService authenticationService) {
             _loggingService = loggingService;
             _carManagementService = carManagementService;
@@ -20,6 +29,11 @@ namespace API.Controllers {
         }
 
         #region GET
+        /// <summary>
+        /// Get car by ID
+        /// </summary>
+        /// <param name="ID">Car ID</param>
+        /// <returns></returns>
         [HttpGet("GetCarByID/{ID}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -33,6 +47,11 @@ namespace API.Controllers {
             }
         }
 
+        /// <summary>
+        /// Get car by registration number
+        /// </summary>
+        /// <param name="registrationNumber">Car's registration number</param>
+        /// <returns></returns>
         [HttpGet("GetCarByRegistrationNumber/{registrationNumber}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -45,6 +64,14 @@ namespace API.Controllers {
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }
+
+        /// <summary>
+        /// Get all cars (only admin or employee)
+        /// </summary>
+        /// <param name="includeUnoperational">[false] shall the result include unoperational cars</param>
+        /// <param name="count">[Optional] number of records to take</param>
+        /// <param name="startIndex">[Optional] starting record</param>
+        /// <returns></returns>
         [HttpGet("GetAllCars")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -58,6 +85,12 @@ namespace API.Controllers {
         }
         #endregion
         #region Car Management
+        /// <summary>
+        /// Add car (only admin or employee)
+        /// </summary>
+        /// <param name="car"></param>
+        /// <param name="jwt"></param>
+        /// <returns></returns>
         [HttpPost("AddCar")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -81,6 +114,12 @@ namespace API.Controllers {
             }
         }
 
+        /// <summary>
+        /// Update car (only admin or employee)
+        /// </summary>
+        /// <param name="car"></param>
+        /// <param name="jwt"></param>
+        /// <returns></returns>
         [HttpPut("UpdateCar")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -104,6 +143,12 @@ namespace API.Controllers {
             }
         }
 
+        /// <summary>
+        /// Delete car (only admin or employee)
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <param name="jwt"></param>
+        /// <returns></returns>
         [HttpDelete("DeleteCar/{ID}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -123,6 +168,29 @@ namespace API.Controllers {
                 return Result.Pass(_carManagementService.DeleteCar(ID), "CarManagementController", "DeleteCar");
             } catch (Exception exc) {
                 _loggingService.Log(exc, "CarManagementController:DeleteCar");
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        /// <summary>
+        /// Check if car is ordered (only admin or employee)
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <param name="jwt"></param>
+        /// <returns></returns>
+        [HttpGet("IsCarOrdered/{ID}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult IsCarOrdered([FromRoute] int ID, [FromHeader] string jwt) {
+            try {
+                if (!_authenticationService.IsUserType(jwt, Shared.Enums.UserTypes.EMPLOYEE)) {
+                    _loggingService.Log("CarManagementController:DeleteCar: 403", Shared.Enums.EventTypes.ERROR);
+                    return new StatusCodeResult(StatusCodes.Status403Forbidden);
+                }
+                return Result.Pass(_carManagementService.IsCarOrdered(ID), "CarManagementController", "IsCarOrdered");
+            } catch (Exception exc) {
+                _loggingService.Log(exc, "CarManagementController:IsCarOrdered");
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }

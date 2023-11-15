@@ -9,5 +9,6 @@ namespace Services.Interfaces {
         public IActionResult AddCar(CarDTO car);
         public IActionResult EditCar(CarDTO car);
         public IActionResult DeleteCar(int ID);
+        public IActionResult IsCarOrdered(int ID);
     }
 }
