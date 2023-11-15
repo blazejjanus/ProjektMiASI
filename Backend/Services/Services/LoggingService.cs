@@ -20,7 +20,7 @@ namespace Services.Services {
             }
         }
 
-        public void Log(string message, EventType type) {
+        public void Log(string message, EventTypes type) {
             Display(message, type);
             if (Config.UseLogFile) {
                 LogFile(type.ToString() + ": " + message);
@@ -34,9 +34,9 @@ namespace Services.Services {
                 text += message + ": ";
             }
             text += exc.ToString();
-            Display(text, EventType.ERROR);
+            Display(text, EventTypes.ERROR);
             if (Config.UseLogFile) {
-                LogFile(EventType.ERROR.ToString() + ": " + text);
+                LogFile(EventTypes.ERROR.ToString() + ": " + text);
             }
             LogDatabase(exc, message);
         }
@@ -49,7 +49,7 @@ namespace Services.Services {
             File.AppendAllTextAsync(LogFileName, DateTime.Now.ToString("yyyy-MM-dd HH:mm") + ": " + message);
         }
 
-        private void LogDatabase(string message, EventType type) {
+        private void LogDatabase(string message, EventTypes type) {
             var dbo = new EventDBO(message, type);
             using (var ctx = new DataContext(Config)) {
                 ctx.Events.Add(dbo);
@@ -65,15 +65,15 @@ namespace Services.Services {
             }
         }
 
-        private void Display(string message, EventType type) {
+        private void Display(string message, EventTypes type) {
             switch (type) {
-                case EventType.ERROR:
+                case EventTypes.ERROR:
                     Console.ForegroundColor = ConsoleColor.Red;
                     break;
-                case EventType.WARNING:
+                case EventTypes.WARNING:
                     Console.ForegroundColor = ConsoleColor.DarkYellow;
                     break;
-                case EventType.SUCCESS:
+                case EventTypes.SUCCESS:
                     Console.ForegroundColor = ConsoleColor.DarkGreen;
                     break;
             }

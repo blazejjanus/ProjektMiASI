@@ -21,7 +21,7 @@ namespace DB.DBO {
         [Required]
         public virtual string PasswordSalt { get; set; }
         [Required]
-        public virtual UserType UserType { get; set; }
+        public virtual UserTypes UserType { get; set; }
         [MaxLength(20)]
         public virtual string PhoneNumber { get; set; }
         [ForeignKey("AddressID")]
@@ -34,7 +34,7 @@ namespace DB.DBO {
             Surname = string.Empty;
             PasswordHash = string.Empty;
             PasswordSalt = string.Empty;
-            UserType = UserType.CUSTOMER;
+            UserType = UserTypes.CUSTOMER;
             PhoneNumber = string.Empty;
             IsDeleted = false;
             Address = new AddressDBO();

@@ -11,7 +11,7 @@ namespace Services.DTO {
         public DateTime ProductionDate { get; set; }
         public double Horsepower { get; set; }
         public double EngineCapacity { get; set; }
-        public FuelType FuelType { get; set; }
+        public FuelTypes FuelType { get; set; }
         public string ShortDescription { get; set; }
         public string LongDescription { get; set; }
         public double PricePerDay { get; set; }

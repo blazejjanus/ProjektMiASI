@@ -27,7 +27,7 @@ namespace DB.DBO {
         [Required]
         public virtual double EngineCapacity { get; set; }
         [Required]
-        public virtual FuelType FuelType { get; set; }
+        public virtual FuelTypes FuelType { get; set; }
         [Required]
         [MaxLength(500)]
         public virtual string ShortDescription { get; set; }

@@ -27,7 +27,7 @@ namespace API.Controllers {
         public IActionResult GetUserByID([FromRoute] int ID, [FromHeader] string jwt, [FromHeader] bool includeDeleted = false) {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
-                    _loggingService.Log("UserController:GetUserByID: 401", Shared.Enums.EventType.ERROR);
+                    _loggingService.Log("UserController:GetUserByID: 401", Shared.Enums.EventTypes.ERROR);
                     return new StatusCodeResult(StatusCodes.Status401Unauthorized);
                 }
                 return Result.Pass(_userService.GetUser(ID, includeDeleted), "UserController", "GetUserByID");
@@ -46,7 +46,7 @@ namespace API.Controllers {
         public IActionResult GetUserByEmail([FromRoute] string Email, [FromHeader] string jwt, [FromHeader] bool includeDeleted = false) {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
-                    _loggingService.Log("UserController:GetUserByUsername: 401", Shared.Enums.EventType.ERROR);
+                    _loggingService.Log("UserController:GetUserByUsername: 401", Shared.Enums.EventTypes.ERROR);
                     return new StatusCodeResult(StatusCodes.Status401Unauthorized);
                 }
                 return Result.Pass(_userService.GetUser(Email, includeDeleted), "UserController", "GetUserByID");
@@ -64,11 +64,11 @@ namespace API.Controllers {
         public IActionResult GetAllUsers([FromHeader] string jwt, [FromHeader] bool includeDeleted = false) {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
-                    _loggingService.Log("UserController:GetAllUsers: 401", Shared.Enums.EventType.ERROR);
+                    _loggingService.Log("UserController:GetAllUsers: 401", Shared.Enums.EventTypes.ERROR);
                     return new StatusCodeResult(StatusCodes.Status401Unauthorized);
                 }
-                if(!_authenticationService.IsUserType(jwt, Shared.Enums.UserType.EMPLOYEE)) {
-                    _loggingService.Log("UserController:GetAllUsers: 403 - provided token is not a token of admin or employee.", Shared.Enums.EventType.ERROR);
+                if(!_authenticationService.IsUserType(jwt, Shared.Enums.UserTypes.EMPLOYEE)) {
+                    _loggingService.Log("UserController:GetAllUsers: 403 - provided token is not a token of admin or employee.", Shared.Enums.EventTypes.ERROR);
                     return new StatusCodeResult(StatusCodes.Status403Forbidden);
                 }
                 return Result.Pass(_userService.GetAllUsers(includeDeleted), "UserController", "GetAllUsers");
@@ -88,7 +88,7 @@ namespace API.Controllers {
         public IActionResult AddUser([FromBody] UserDTO user, [FromHeader] string jwt) {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
-                    _loggingService.Log("UserController:AddUser: 401", Shared.Enums.EventType.ERROR);
+                    _loggingService.Log("UserController:AddUser: 401", Shared.Enums.EventTypes.ERROR);
                     return new StatusCodeResult(StatusCodes.Status401Unauthorized);
                 }
                 return Result.Pass(_userService.AddUser(user), "UserController", "AddUser");
@@ -107,11 +107,11 @@ namespace API.Controllers {
         public IActionResult UpdateUser([FromBody] UserDTO user, [FromHeader] string jwt) {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
-                    _loggingService.Log("UserController:UpdateUser: 401", Shared.Enums.EventType.ERROR);
+                    _loggingService.Log("UserController:UpdateUser: 401", Shared.Enums.EventTypes.ERROR);
                     return new StatusCodeResult(StatusCodes.Status401Unauthorized);
                 }
                 if (!_authenticationService.IsUser(jwt, user.ID) && !_authenticationService.IsHigherType(jwt, user.ID)) {
-                    _loggingService.Log("UserController:UpdateUser: 403 - provided token is not a token of user being updated.", Shared.Enums.EventType.ERROR);
+                    _loggingService.Log("UserController:UpdateUser: 403 - provided token is not a token of user being updated.", Shared.Enums.EventTypes.ERROR);
                     return new StatusCodeResult(StatusCodes.Status403Forbidden);
                 }
                 return Result.Pass(_userService.ModifyUser(user), "UserController", "UpdateUser");
@@ -130,7 +130,7 @@ namespace API.Controllers {
         public IActionResult DeleteUserByID([FromRoute] int ID, [FromHeader] string jwt) {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
-                    _loggingService.Log("UserController:DeleteUserByID: 401", Shared.Enums.EventType.ERROR);
+                    _loggingService.Log("UserController:DeleteUserByID: 401", Shared.Enums.EventTypes.ERROR);
                     return new StatusCodeResult(StatusCodes.Status401Unauthorized);
                 }
                 return Result.Pass(_userService.RemoveUser(ID), "UserController", "DeleteUserByID");
@@ -149,7 +149,7 @@ namespace API.Controllers {
         public IActionResult DeleteUserByEmail([FromRoute] string email, [FromHeader] string jwt) {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
-                    _loggingService.Log("UserController:DeleteUserByEmail: 401", Shared.Enums.EventType.ERROR);
+                    _loggingService.Log("UserController:DeleteUserByEmail: 401", Shared.Enums.EventTypes.ERROR);
                     return new StatusCodeResult(StatusCodes.Status401Unauthorized);
                 }
                 return Result.Pass(_userService.RemoveUser(email), "UserController", "DeleteUserByEmail");

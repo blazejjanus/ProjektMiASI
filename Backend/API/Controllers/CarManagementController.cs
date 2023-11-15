@@ -67,11 +67,11 @@ namespace API.Controllers {
         public IActionResult AddCar([FromBody] CarDTO car, [FromHeader] string jwt) {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
-                    _loggingService.Log("CarManagementController:AddCar: 401", Shared.Enums.EventType.ERROR);
+                    _loggingService.Log("CarManagementController:AddCar: 401", Shared.Enums.EventTypes.ERROR);
                     return new StatusCodeResult(StatusCodes.Status401Unauthorized);
                 }
-                if (!_authenticationService.IsUserType(jwt, Shared.Enums.UserType.EMPLOYEE)) {
-                    _loggingService.Log("CarManagementController:AddCar: 403", Shared.Enums.EventType.ERROR);
+                if (!_authenticationService.IsUserType(jwt, Shared.Enums.UserTypes.EMPLOYEE)) {
+                    _loggingService.Log("CarManagementController:AddCar: 403", Shared.Enums.EventTypes.ERROR);
                     return new StatusCodeResult(StatusCodes.Status403Forbidden);
                 }
                 return Result.Pass(_carManagementService.AddCar(car), "CarManagementController", "AddCar");
@@ -90,11 +90,11 @@ namespace API.Controllers {
         public IActionResult UpdateCar([FromBody] CarDTO car, [FromHeader] string jwt) {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
-                    _loggingService.Log("CarManagementController:UpdateCar: 401", Shared.Enums.EventType.ERROR);
+                    _loggingService.Log("CarManagementController:UpdateCar: 401", Shared.Enums.EventTypes.ERROR);
                     return new StatusCodeResult(StatusCodes.Status401Unauthorized);
                 }
-                if(!_authenticationService.IsUserType(jwt, Shared.Enums.UserType.EMPLOYEE)) {
-                    _loggingService.Log("CarManagementController:UpdateCar: 403", Shared.Enums.EventType.ERROR);
+                if(!_authenticationService.IsUserType(jwt, Shared.Enums.UserTypes.EMPLOYEE)) {
+                    _loggingService.Log("CarManagementController:UpdateCar: 403", Shared.Enums.EventTypes.ERROR);
                     return new StatusCodeResult(StatusCodes.Status403Forbidden);
                 }
                 return Result.Pass(_carManagementService.EditCar(car), "CarManagementController", "UpdateCar");
@@ -113,11 +113,11 @@ namespace API.Controllers {
         public IActionResult DeleteCar([FromRoute] int ID, [FromHeader] string jwt) {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
-                    _loggingService.Log("CarManagementController:DeleteCar: 401", Shared.Enums.EventType.ERROR);
+                    _loggingService.Log("CarManagementController:DeleteCar: 401", Shared.Enums.EventTypes.ERROR);
                     return new StatusCodeResult(StatusCodes.Status401Unauthorized);
                 }
-                if (!_authenticationService.IsUserType(jwt, Shared.Enums.UserType.EMPLOYEE)) {
-                    _loggingService.Log("CarManagementController:DeleteCar: 403", Shared.Enums.EventType.ERROR);
+                if (!_authenticationService.IsUserType(jwt, Shared.Enums.UserTypes.EMPLOYEE)) {
+                    _loggingService.Log("CarManagementController:DeleteCar: 403", Shared.Enums.EventTypes.ERROR);
                     return new StatusCodeResult(StatusCodes.Status403Forbidden);
                 }
                 return Result.Pass(_carManagementService.DeleteCar(ID), "CarManagementController", "DeleteCar");

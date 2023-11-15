@@ -55,11 +55,11 @@ namespace API.Controllers {
         public IActionResult AddCarImage([FromRoute] int CarID, [FromBody] string imageContent, [FromHeader] string jwt, [FromHeader] bool? isMain = null) {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
-                    _loggingService.Log("ImageController:AddCarImage: 401", Shared.Enums.EventType.ERROR);
+                    _loggingService.Log("ImageController:AddCarImage: 401", Shared.Enums.EventTypes.ERROR);
                     return new StatusCodeResult(StatusCodes.Status401Unauthorized);
                 }
-                if (!_authenticationService.IsUserType(jwt, Shared.Enums.UserType.EMPLOYEE)) {
-                    _loggingService.Log("ImageController:AddCarImage: 403", Shared.Enums.EventType.ERROR);
+                if (!_authenticationService.IsUserType(jwt, Shared.Enums.UserTypes.EMPLOYEE)) {
+                    _loggingService.Log("ImageController:AddCarImage: 403", Shared.Enums.EventTypes.ERROR);
                     return new StatusCodeResult(StatusCodes.Status403Forbidden);
                 }
                 return Result.Pass(_imageService.AddCarImage(CarID, imageContent, isMain), "ImageController", "AddCarImage");
@@ -78,11 +78,11 @@ namespace API.Controllers {
         public IActionResult DeleteImage([FromRoute] int ImageID, [FromHeader] string jwt) {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
-                    _loggingService.Log("ImageController:AddCarImage: 401", Shared.Enums.EventType.ERROR);
+                    _loggingService.Log("ImageController:AddCarImage: 401", Shared.Enums.EventTypes.ERROR);
                     return new StatusCodeResult(StatusCodes.Status401Unauthorized);
                 }
-                if (!_authenticationService.IsUserType(jwt, Shared.Enums.UserType.EMPLOYEE)) {
-                    _loggingService.Log("ImageController:AddCarImage: 403", Shared.Enums.EventType.ERROR);
+                if (!_authenticationService.IsUserType(jwt, Shared.Enums.UserTypes.EMPLOYEE)) {
+                    _loggingService.Log("ImageController:AddCarImage: 403", Shared.Enums.EventTypes.ERROR);
                     return new StatusCodeResult(StatusCodes.Status403Forbidden);
                 }
                 return Result.Pass(_imageService.DeleteImage(ImageID), "ImageController", "DeleteImage");
@@ -101,11 +101,11 @@ namespace API.Controllers {
         public IActionResult EditImage([FromRoute] int ImageID, [FromBody] string imageContent, [FromHeader] string jwt) {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
-                    _loggingService.Log("ImageController:AddCarImage: 401", Shared.Enums.EventType.ERROR);
+                    _loggingService.Log("ImageController:AddCarImage: 401", Shared.Enums.EventTypes.ERROR);
                     return new StatusCodeResult(StatusCodes.Status401Unauthorized);
                 }
-                if (!_authenticationService.IsUserType(jwt, Shared.Enums.UserType.EMPLOYEE)) {
-                    _loggingService.Log("ImageController:AddCarImage: 403", Shared.Enums.EventType.ERROR);
+                if (!_authenticationService.IsUserType(jwt, Shared.Enums.UserTypes.EMPLOYEE)) {
+                    _loggingService.Log("ImageController:AddCarImage: 403", Shared.Enums.EventTypes.ERROR);
                     return new StatusCodeResult(StatusCodes.Status403Forbidden);
                 }
                 return Result.Pass(_imageService.EditImage(ImageID, imageContent), "ImageController", "AddCarImage");

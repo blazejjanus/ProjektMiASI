@@ -1,5 +1,5 @@
 ﻿namespace Shared.Enums {
-    public enum UserType {
+    public enum UserTypes {
         ADMIN,
         EMPLOYEE,
         CUSTOMER

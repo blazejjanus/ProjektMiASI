@@ -66,7 +66,7 @@ namespace Services.Services {
             }
         }
 
-        public bool IsUserType(string jwt, UserType userType) {
+        public bool IsUserType(string jwt, UserTypes userType) {
             var user = GetUser(jwt);
             if (user.UserType <= userType) {
                 return true;
@@ -74,7 +74,7 @@ namespace Services.Services {
             return false;
         }
 
-        public bool IsHigherType(string jwt, UserType userType) {
+        public bool IsHigherType(string jwt, UserTypes userType) {
             var user = GetUser(jwt);
             if (user.UserType < userType) {
                 return true;

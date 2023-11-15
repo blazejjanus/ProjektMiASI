@@ -9,7 +9,7 @@ namespace Services.DTO {
         public string Surname { get; set; }
         public string Password { get; set; }
         [JsonConverter(typeof(JsonStringEnumConverter))]
-        public UserType UserType { get; set; }
+        public UserTypes UserType { get; set; }
         public string PhoneNumber { get; set; }
         public AddressDTO? Address { get; set; }
         public bool IsDeleted { get; set; }
@@ -19,7 +19,7 @@ namespace Services.DTO {
             Name = string.Empty;
             Surname = string.Empty;
             Password = string.Empty;
-            UserType = UserType.CUSTOMER;
+            UserType = UserTypes.CUSTOMER;
             PhoneNumber = string.Empty;
             IsDeleted = false;
             Address = new AddressDTO();

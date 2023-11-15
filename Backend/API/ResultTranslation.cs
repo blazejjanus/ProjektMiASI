@@ -30,7 +30,7 @@ namespace API {
                 if (result.Value != null) {
                     message += ": " + result.Value.ToString();
                 }
-                _loggingService.Log(message, EventType.ERROR);
+                _loggingService.Log(message, EventTypes.ERROR);
             }
             return result;
         }
@@ -38,7 +38,7 @@ namespace API {
         private IActionResult PassStatusCodeResult(StatusCodeResult result, string controller, string method) {
             if (!ResponseValidator.IsSuccess((int)result.StatusCode)) {
                 string message = controller + ", " + method + ": " + result.StatusCode.ToString();
-                _loggingService.Log(message, EventType.ERROR);
+                _loggingService.Log(message, EventTypes.ERROR);
             }
             return result;
         }
