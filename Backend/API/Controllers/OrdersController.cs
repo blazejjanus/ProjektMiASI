@@ -7,6 +7,9 @@ using Shared.Enums;
 using System.Reflection;
 
 namespace API.Controllers {
+    /// <summary>
+    /// Orders controller
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class OrdersController : ControllerBase {
@@ -15,6 +18,12 @@ namespace API.Controllers {
         private readonly IAuthenticationService _authenticationService;
         private ResultTranslation Result { get; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="loggingService"></param>
+        /// <param name="orderService"></param>
+        /// <param name="authenticationService"></param>
         public OrdersController(ILoggingService loggingService, IOrderService orderService, IAuthenticationService authenticationService) {
             _loggingService = loggingService;
             _orderService = orderService;
@@ -23,6 +32,12 @@ namespace API.Controllers {
         }
 
         #region GET
+        /// <summary>
+        /// Get order by ID
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <param name="jwt"></param>
+        /// <returns></returns>
         [HttpGet("GetOrderByID/{ID}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -39,6 +54,12 @@ namespace API.Controllers {
             }
         }
 
+        /// <summary>
+        /// Get all orders (only admin or employee)
+        /// </summary>
+        /// <param name="jwt"></param>
+        /// <param name="orderState"></param>
+        /// <returns></returns>
         [HttpGet("GetAllOrders")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -58,7 +79,14 @@ namespace API.Controllers {
                 return Result.Pass(new StatusCodeResult(StatusCodes.Status500InternalServerError), GetType().Name, MethodBase.GetCurrentMethod()?.Name ?? "", exc.Message);
             }
         }
+
         #region GET For User
+        /// <summary>
+        /// Get user's orders (only for this user's token or higher type user's token)
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="jwt"></param>
+        /// <returns></returns>
         [HttpGet("GetUserOrders{userID}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -79,6 +107,12 @@ namespace API.Controllers {
             }
         }
 
+        /// <summary>
+        /// Get user's orders (only for this user's token or higher type user's token)
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="jwt"></param>
+        /// <returns></returns>
         [HttpGet("GetUserOrders{email}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -100,6 +134,12 @@ namespace API.Controllers {
         }
         #endregion
         #region GET For Car
+        /// <summary>
+        /// Get car's orders (only admin or employee)
+        /// </summary>
+        /// <param name="carID"></param>
+        /// <param name="jwt"></param>
+        /// <returns></returns>
         [HttpGet("GetCarOrders{ID}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -120,6 +160,12 @@ namespace API.Controllers {
             }
         }
 
+        /// <summary>
+        /// Get car's orders (only admin or employee)
+        /// </summary>
+        /// <param name="registrationNumber"></param>
+        /// <param name="jwt"></param>
+        /// <returns></returns>
         [HttpGet("GetCarOrders{registrationNumber}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -142,6 +188,12 @@ namespace API.Controllers {
         #endregion
         #endregion
         #region POST
+        /// <summary>
+        /// Add order (only for customer or higher type user's token)
+        /// </summary>
+        /// <param name="order"></param>
+        /// <param name="jwt"></param>
+        /// <returns></returns>
         [HttpPost("PostOrder")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -163,6 +215,12 @@ namespace API.Controllers {
             }
         }
 
+        /// <summary>
+        /// Update order (only for customer or higher type user's token)
+        /// </summary>
+        /// <param name="order"></param>
+        /// <param name="jwt"></param>
+        /// <returns></returns>
         [HttpPut("UpdateOrder")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -183,6 +241,13 @@ namespace API.Controllers {
             }
         }
 
+        /// <summary>
+        /// Cancel order (only for customer or higher type user's token)
+        /// </summary>
+        /// <param name="orderID"></param>
+        /// <param name="jwt"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidCastException"></exception>
         [HttpPut("CancelOrder{orderID}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

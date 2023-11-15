@@ -3,6 +3,9 @@ using Services.DTO;
 using Services.Interfaces;
 
 namespace API.Controllers {
+    /// <summary>
+    /// User controller
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class UserController : ControllerBase {
@@ -11,13 +14,27 @@ namespace API.Controllers {
         private readonly IAuthenticationService _authenticationService;
         private ResultTranslation Result { get; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="loggingService"></param>
+        /// <param name="userService"></param>
+        /// <param name="authenticationService"></param>
         public UserController(ILoggingService loggingService, IUserService userService, IAuthenticationService authenticationService) {
             _loggingService = loggingService;
             _userService = userService;
             _authenticationService = authenticationService;
             Result = new ResultTranslation(_loggingService);
         }
+
         #region Get User
+        /// <summary>
+        /// Get user by ID
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <param name="jwt"></param>
+        /// <param name="includeDeleted">[false] Include users marked as deleted.</param>
+        /// <returns></returns>
         [HttpGet("GetUserByID/{ID}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -37,6 +54,13 @@ namespace API.Controllers {
             }
         }
 
+        /// <summary>
+        /// Get user by email
+        /// </summary>
+        /// <param name="Email"></param>
+        /// <param name="jwt"></param>
+        /// <param name="includeDeleted">[false] Include users marked as deleted.</param>
+        /// <returns></returns>
         [HttpGet("GetUserByEmail/{Email}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -56,6 +80,12 @@ namespace API.Controllers {
             }
         }
 
+        /// <summary>
+        /// Get all users (only admin or employee)
+        /// </summary>
+        /// <param name="jwt"></param>
+        /// <param name="includeDeleted">[false] Include users marked as deleted.</param>
+        /// <returns></returns>
         [HttpGet("GetAllUsers")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -79,6 +109,12 @@ namespace API.Controllers {
         }   
         #endregion
         #region Change User
+        /// <summary>
+        /// Add user (only admin or employee)
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="jwt"></param>
+        /// <returns></returns>
         [HttpPost("AddUser")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -98,6 +134,12 @@ namespace API.Controllers {
             }
         }
 
+        /// <summary>
+        /// Update user (only admin or employee)
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="jwt"></param>
+        /// <returns></returns>
         [HttpPut("UpdateUser")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -121,6 +163,12 @@ namespace API.Controllers {
             }
         }
 
+        /// <summary>
+        /// Delete user (only admin or employee)
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <param name="jwt"></param>
+        /// <returns></returns>
         [HttpDelete("DeleteUserByID/{ID}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -140,6 +188,12 @@ namespace API.Controllers {
             }
         }
 
+        /// <summary>
+        /// Delete user (only admin or employee)
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="jwt"></param>
+        /// <returns></returns>
         [HttpDelete("DeleteUserByEmail/{email}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
