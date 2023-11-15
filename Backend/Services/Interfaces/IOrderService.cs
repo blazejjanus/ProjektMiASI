@@ -1,14 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Services.DTO;
+using Shared.Enums;
 
 namespace Services.Interfaces {
     public interface IOrderService {
-        IActionResult AddOrder(OrderDTO order);
-        IActionResult DeleteOrder(int ID);
-        IActionResult EditOrder(OrderDTO order);
-        IActionResult GetOrderByID(int ID);
-        IActionResult GetAllOrders();
-        IActionResult GetUserOrders(int userID);
-        IActionResult GetUserOrders(string email);
+        public IActionResult AddOrder(OrderDTO order);
+        public IActionResult EditOrder(OrderDTO order);
+        public IActionResult CancelOrder(int ID);
+        public IActionResult GetOrderByID(int ID);
+        public IActionResult GetAllOrders(OrderStates? state = null);
+        public IActionResult GetUserOrders(int userID);
+        public IActionResult GetUserOrders(string email);
+        public IActionResult GetCarOrders(int carID);
+        public IActionResult GetCarOrders(string registrationNumber);
     }
 }

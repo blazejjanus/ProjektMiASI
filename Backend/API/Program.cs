@@ -21,6 +21,7 @@ namespace API {
                 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
                 builder.Services.AddScoped<IUserService, UserService>();
                 builder.Services.AddScoped<ILoginService, LoginService>();
+                builder.Services.AddScoped<IOrderService, OrderService>();
                 builder.Services.AddScoped<ICarManagementService, CarManagementService>();
                 builder.Services.AddScoped<IImageService, ImageService>();
                 builder.Services.AddControllers();

@@ -1,8 +1,10 @@
 ﻿using DB;
 using DB.DBO;
+using Microsoft.AspNetCore.Http;
 using Services.Interfaces;
 using Shared.Configuration;
 using Shared.Enums;
+using System.Net;
 
 namespace Services.Services {
     public class LoggingService : ILoggingService {
@@ -39,6 +41,12 @@ namespace Services.Services {
                 LogFile(EventTypes.ERROR.ToString() + ": " + text);
             }
             LogDatabase(exc, message);
+        }
+
+        public void Log(int status, string senderClass, string senderMethod, string? message = null) {
+            var text = senderClass + ":" + senderMethod + " - " + status + " " + ((HttpStatusCode)status).ToString();
+            if (!string.IsNullOrEmpty(message)) { text += ": " + message; }
+            Log(text, GetEventTypeByStatusCode(status));
         }
 
 
@@ -92,6 +100,18 @@ namespace Services.Services {
                 }
             }
             return Path.Combine(Environment.LogPath, file + ".log");
+        }
+
+        private EventTypes GetEventTypeByStatusCode(int statusCode) {
+            if (statusCode >= 400 && statusCode < 500) {
+                return EventTypes.ERROR;
+            } else if (statusCode >= 300 && statusCode < 400) {
+                return EventTypes.WARNING;
+            } else if (statusCode >= 200 && statusCode < 300) {
+                return EventTypes.SUCCESS;
+            } else {
+                return EventTypes.INFO;
+            }
         }
     }
 }

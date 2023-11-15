@@ -1,4 +1,5 @@
 ﻿using Shared.Enums;
+using System.ComponentModel;
 using System.Text.Json.Serialization;
 
 namespace Services.DTO {
@@ -7,11 +8,13 @@ namespace Services.DTO {
         public string Email { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
+        [DefaultValue("Qwerty123!@#")]
         public string Password { get; set; }
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public UserTypes UserType { get; set; }
         public string PhoneNumber { get; set; }
         public AddressDTO? Address { get; set; }
+        [DefaultValue(false)]
         public bool IsDeleted { get; set; }
 
         public UserDTO() { 
