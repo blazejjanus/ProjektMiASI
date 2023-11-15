@@ -30,7 +30,10 @@ namespace Services.Services {
                     return new ObjectResult($"Car with ID: {order.Car.ID} cannot be found or is not operational!") { StatusCode = StatusCodes.Status404NotFound };
                 }
                 if(order.CancelationTime != null) order.CancelationTime = null;
-                context.Orders.Add(Mapper.Get().Map<OrderDBO>(order));
+                var dbo = Mapper.Get().Map<OrderDBO>(order);
+                dbo.Customer = context.Users.First(x => x.ID == order.Customer.ID && !x.IsDeleted);
+                dbo.Car = context.Cars.First(x => x.ID == order.Car.ID && x.IsOperational);
+                context.Orders.Add(dbo);
                 context.SaveChanges();
                 return new StatusCodeResult(StatusCodes.Status201Created);
             }
@@ -75,8 +78,8 @@ namespace Services.Services {
                 var dbo = context.Orders.First(x => x.ID == order.ID);
                 dbo.RentStart = order.RentStart;
                 dbo.RentEnd = order.RentEnd;
-                dbo.Car = Mapper.Get().Map<CarDBO>(order.Car);
-                dbo.Customer = Mapper.Get().Map<UserDBO>(order.Customer);
+                dbo.Car = Mapper.Get().Map<CarDBO>(context.Cars.First(x => x.ID == order.Car.ID && x.IsOperational));
+                dbo.Customer = Mapper.Get().Map<UserDBO>(context.Users.First(x => x.ID == order.Customer.ID && !x.IsDeleted));
                 context.SaveChanges();
                 return new StatusCodeResult(StatusCodes.Status200OK);
             }
