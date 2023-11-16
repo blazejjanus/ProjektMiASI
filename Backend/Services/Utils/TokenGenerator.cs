@@ -28,7 +28,7 @@ namespace Services.Utils {
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.GivenName, user.Name),
                 new Claim(JwtRegisteredClaimNames.FamilyName, user.Surname),
-                new Claim("role", user.UserType.ToString().ToLower()),
+                new Claim("role", ((int)user.UserType).ToString()),
             };
             var jwtToken = new JwtSecurityToken(Config.JWT.Issuer,
                 Config.JWT.Audience ?? "", claims,
