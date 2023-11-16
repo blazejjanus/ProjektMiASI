@@ -6,6 +6,7 @@ using Services.DTO;
 using Services.Interfaces;
 using Services.Utils;
 using Shared.Configuration;
+using Shared.Enums;
 
 namespace Services.Services {
     public class UserService : IUserService {
@@ -124,8 +125,18 @@ namespace Services.Services {
             using (var context = new DataContext(Config)) {
                 if (context.Users.Any(x => x.Email == email && !x.IsDeleted)) {
                     UserDBO dbo = context.Users.Single(x => x.Email == email && !x.IsDeleted);
+                    var orders = context.Orders.Where(x => x.Customer.ID == dbo.ID);
+                    foreach(var order in orders) {
+                        if(OrderStateHelper.GetOrderState(order) == OrderStates.ACTIVE) {
+                            return new ObjectResult("User has active orders!") { StatusCode = StatusCodes.Status409Conflict };
+                        }
+                        if (OrderStateHelper.GetOrderState(order) == OrderStates.PENDING) {
+                            return new ObjectResult("User has pending orders!") { StatusCode = StatusCodes.Status409Conflict };
+                        }
+                    }
                     if (hard) {
                         context.Users.Remove(dbo);
+                        context.Orders.RemoveRange(orders);
                     } else {
                         dbo.IsDeleted = true;
                     }
