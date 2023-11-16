@@ -29,7 +29,13 @@ namespace Services.Services {
                 if(!context.Cars.Any(x => x.ID == order.Car.ID && x.IsOperational && !x.IsDeleted)) {
                     return new ObjectResult($"Car with ID: {order.Car.ID} cannot be found or is not operational!") { StatusCode = StatusCodes.Status404NotFound };
                 }
-                if(order.CancelationTime != null) order.CancelationTime = null;
+                if(context.Orders.Any(x => x.Car.ID == order.Car.ID &&
+                        ((order.RentStart >= x.RentStart && order.RentStart < x.RentEnd) ||
+                         (order.RentEnd > x.RentStart && order.RentEnd <= x.RentEnd) ||
+                         (order.RentStart <= x.RentStart && order.RentEnd >= x.RentEnd)))) {
+                    return new ObjectResult($"Car with ID: {order.Car.ID} is already reserved for the specified time period!") { StatusCode = StatusCodes.Status400BadRequest };
+                }
+                if (order.CancelationTime != null) order.CancelationTime = null;
                 var dbo = Mapper.Get().Map<OrderDBO>(order);
                 dbo.Customer = context.Users.First(x => x.ID == order.Customer.ID && !x.IsDeleted);
                 dbo.Car = context.Cars.First(x => x.ID == order.Car.ID && x.IsOperational);
