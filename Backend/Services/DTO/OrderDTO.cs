@@ -1,6 +1,6 @@
 ﻿namespace Services.DTO {
     public class OrderDTO {
-        public int OrderID { get; set; }
+        public int ID { get; set; }
         public UserDTO Customer { get; set; }
         public CarDTO Car { get; set; }
         public DateTime RentStart { get; set; }

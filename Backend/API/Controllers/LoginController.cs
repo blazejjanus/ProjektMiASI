@@ -3,6 +3,9 @@ using Services.DTO;
 using Services.Interfaces;
 
 namespace API.Controllers {
+    /// <summary>
+    /// Login controller
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class LoginController : ControllerBase {
@@ -10,12 +13,23 @@ namespace API.Controllers {
         private readonly ILoginService _loginService;
         private ResultTranslation Result { get; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="loggingService"></param>
+        /// <param name="loginService"></param>
         public LoginController(ILoggingService loggingService, ILoginService loginService) {
             _loggingService = loggingService;
             _loginService = loginService;
             Result = new ResultTranslation(_loggingService);
         }
 
+        /// <summary>
+        /// Login method
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns>User's token</returns>
         [HttpPost("Login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -29,6 +43,11 @@ namespace API.Controllers {
             }
         }
 
+        /// <summary>
+        /// Register method
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns>User's token</returns>
         [HttpPost("Register")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

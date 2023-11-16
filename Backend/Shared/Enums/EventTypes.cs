@@ -1,5 +1,5 @@
 ﻿namespace Shared.Enums {
-    public enum EventType {
+    public enum EventTypes {
         ERROR,
         WARNING,
         SUCCESS,

@@ -6,6 +6,7 @@ using Services.DTO;
 using Services.Interfaces;
 using Services.Utils;
 using Shared.Configuration;
+using Shared.Enums;
 
 namespace Services.Services {
     public class CarManagementService : ICarManagementService {
@@ -27,11 +28,25 @@ namespace Services.Services {
             }
         }
 
-        public IActionResult DeleteCar(int ID) {
+        public IActionResult DeleteCar(int ID, bool hard = false) {
             using (var context = new DataContext(Config)) {
                 if (context.Cars.Any(x => x.ID == ID)) {
-                    var dbo = context.Cars.Single(x => x.ID == ID);
-                    context.Cars.Remove(dbo);
+                    var dbo = context.Cars.First(x => x.ID == ID);
+                    var orders = context.Orders.Where(x => x.Car.ID == dbo.ID);
+                    foreach (var order in orders) {
+                        if (OrderStateHelper.GetOrderState(order) == OrderStates.ACTIVE) {
+                            return new ObjectResult("User has active orders!") { StatusCode = StatusCodes.Status409Conflict };
+                        }
+                        if (OrderStateHelper.GetOrderState(order) == OrderStates.PENDING) {
+                            return new ObjectResult("User has pending orders!") { StatusCode = StatusCodes.Status409Conflict };
+                        }
+                    }
+                    if (hard) {
+                        context.Cars.Remove(dbo);
+                        context.Orders.RemoveRange(orders);
+                    } else {
+                        dbo.IsDeleted = true;
+                    }
                     context.SaveChanges();
                     return new StatusCodeResult(StatusCodes.Status200OK);
                 } else {
@@ -90,6 +105,20 @@ namespace Services.Services {
                         context.Cars.ToList().Take(count ?? 100).Skip(startIndex ?? 0)
                     )) { StatusCode = StatusCodes.Status200OK };
                 }
+            }
+        }
+
+        public IActionResult IsCarOrdered(int ID) {
+            using (var context = new DataContext(Config)) { 
+                if(!context.Cars.Any(x => x.ID == ID)) { return new StatusCodeResult(StatusCodes.Status404NotFound); }
+                var orders = context.Orders.Where(x => x.ID == ID).ToList();
+                foreach(var order in orders) {
+                    var state = OrderStateHelper.GetOrderState(order);
+                    if(state == OrderStates.ACTIVE || state == OrderStates.PENDING) {
+                        return new ObjectResult(true) { StatusCode = StatusCodes.Status200OK };
+                    }
+                }
+                return new ObjectResult(false) { StatusCode = StatusCodes.Status200OK };
             }
         }
     }

@@ -27,7 +27,7 @@ namespace DB.DBO {
         [Required]
         public virtual double EngineCapacity { get; set; }
         [Required]
-        public virtual FuelType FuelType { get; set; }
+        public virtual FuelTypes FuelType { get; set; }
         [Required]
         [MaxLength(500)]
         public virtual string ShortDescription { get; set; }
@@ -36,6 +36,7 @@ namespace DB.DBO {
         public virtual string LongDescription { get; set; }
         [Required]
         public virtual double PricePerDay { get; set; }
+        public virtual bool IsDeleted { get; set; }
 
         public CarDBO() {
             Brand = string.Empty;
@@ -44,6 +45,7 @@ namespace DB.DBO {
             ShortDescription = string.Empty;
             LongDescription = string.Empty;
             IsOperational = true;
+            IsDeleted = false;
         }
     }
 }

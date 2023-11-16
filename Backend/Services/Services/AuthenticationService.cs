@@ -59,27 +59,22 @@ namespace Services.Services {
 
         public bool IsUser(string jwt, int userID) {
             int id = GetUserID(jwt);
-            if (id == userID) {
-                return true;
-            } else {
-                return false;
-            }
+            return id == userID;
         }
 
-        public bool IsUserType(string jwt, UserType userType) {
+        public bool IsUser(string jwt, string username) {
             var user = GetUser(jwt);
-            if (user.UserType <= userType) {
-                return true;
-            }
-            return false;
+            return user.Email == username;
         }
 
-        public bool IsHigherType(string jwt, UserType userType) {
+        public bool IsUserType(string jwt, UserTypes userType) {
             var user = GetUser(jwt);
-            if (user.UserType < userType) {
-                return true;
-            }
-            return false;
+            return user.UserType <= userType;
+        }
+
+        public bool IsHigherType(string jwt, UserTypes userType) {
+            var user = GetUser(jwt);
+            return user.UserType < userType;
         }
 
         public bool IsHigherType(string jwt, int userID) {
@@ -89,6 +84,17 @@ namespace Services.Services {
                     return IsHigherType(jwt, user.UserType);
                 } else {
                     throw new Exception($"Provided JWT token points an user with ID {userID}. User with that ID was not found!");
+                }
+            }
+        }
+
+        public bool IsHigherType(string jwt, string username) {
+            using (var context = new DataContext(Config)) {
+                if (context.Users.Any(x => x.Email == username)) {
+                    var user = Mapper.Get().Map<UserDTO>(context.Users.Single(x => x.Email == username));
+                    return IsHigherType(jwt, user.UserType);
+                } else {
+                    throw new Exception($"Provided JWT token points an user with Email {username}. User with that ID was not found!");
                 }
             }
         }

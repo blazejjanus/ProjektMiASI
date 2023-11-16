@@ -1,5 +1,5 @@
 ﻿namespace Shared.Enums {
-    public enum FuelType {
+    public enum FuelTypes {
         Gasoline,
         Oil,
         LPG,

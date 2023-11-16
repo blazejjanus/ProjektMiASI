@@ -1,17 +1,30 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
-using Shared.Enums;
-using Shared.Validation;
 
 namespace API {
+    /// <summary>
+    /// Class used for translating services results and logging it
+    /// </summary>
     public class ResultTranslation {
         private readonly ILoggingService _loggingService;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="loggingService"></param>
         public ResultTranslation(ILoggingService loggingService) {
             _loggingService = loggingService;
         }
 
-        public IActionResult Pass(IActionResult result, string controller, string method) {
+        /// <summary>
+        /// Pass services IActionResult result and log it
+        /// </summary>
+        /// <param name="result">IActionResult result from service</param>
+        /// <param name="controller">Controller's name</param>
+        /// <param name="method">Method's name</param>
+        /// <param name="message">[Optional] Additional logging message</param>
+        /// <returns></returns>
+        public IActionResult Pass(IActionResult result, string controller, string method, string? message = null) {
             if (result.GetType() == typeof(ObjectResult)) {
                 return PassObjectResult((ObjectResult)result, controller, method);
             }
@@ -21,25 +34,13 @@ namespace API {
             return result;
         }
 
-        private IActionResult PassObjectResult(ObjectResult result, string controller, string method) {
-            if (!ResponseValidator.IsSuccess(result.StatusCode ?? 200)) {
-                string message = controller + ", " + method;
-                if (result.StatusCode.HasValue) {
-                    message += ": " + result.StatusCode.Value.ToString();
-                }
-                if (result.Value != null) {
-                    message += ": " + result.Value.ToString();
-                }
-                _loggingService.Log(message, EventType.ERROR);
-            }
+        private IActionResult PassObjectResult(ObjectResult result, string controller, string method, string? message = null) {
+            _loggingService.Log(result.StatusCode ?? 200, controller, method, message);
             return result;
         }
 
-        private IActionResult PassStatusCodeResult(StatusCodeResult result, string controller, string method) {
-            if (!ResponseValidator.IsSuccess((int)result.StatusCode)) {
-                string message = controller + ", " + method + ": " + result.StatusCode.ToString();
-                _loggingService.Log(message, EventType.ERROR);
-            }
+        private IActionResult PassStatusCodeResult(StatusCodeResult result, string controller, string method, string? message = null) {
+            _loggingService.Log(result.StatusCode, controller, method, message);
             return result;
         }
     }

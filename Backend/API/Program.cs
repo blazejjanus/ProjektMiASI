@@ -3,7 +3,14 @@ using Services.Services;
 using Shared.Configuration;
 
 namespace API {
+    /// <summary>
+    /// Main ASP.NET App class
+    /// </summary>
     public class Program {
+        /// <summary>
+        /// Main method
+        /// </summary>
+        /// <param name="args"></param>
         public static void Main(string[] args) {
             try {
                 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +28,7 @@ namespace API {
                 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
                 builder.Services.AddScoped<IUserService, UserService>();
                 builder.Services.AddScoped<ILoginService, LoginService>();
+                builder.Services.AddScoped<IOrderService, OrderService>();
                 builder.Services.AddScoped<ICarManagementService, CarManagementService>();
                 builder.Services.AddScoped<IImageService, ImageService>();
                 builder.Services.AddControllers();

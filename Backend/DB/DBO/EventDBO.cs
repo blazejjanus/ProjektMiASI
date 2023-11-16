@@ -8,7 +8,7 @@ namespace DB.DBO {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public virtual int ID { get; set; }
         public virtual DateTime DateTime { get; set; }
-        public virtual EventType Type { get; set; }
+        public virtual EventTypes Type { get; set; }
         [MaxLength(5000)]
         public virtual string? Message { get; set; }
         [MaxLength(10000)]
@@ -16,7 +16,7 @@ namespace DB.DBO {
         [MaxLength(5000)]
         public virtual string? Trace { get; set; }
 
-        public EventDBO(string message, EventType type) {
+        public EventDBO(string message, EventTypes type) {
             Message = message;
             Type = type;
             DateTime = DateTime.Now;
@@ -31,7 +31,7 @@ namespace DB.DBO {
             Message = message;
             Inner = exc.InnerException?.ToString();
             Trace = exc.StackTrace?.ToString();
-            Type = EventType.ERROR;
+            Type = EventTypes.ERROR;
             DateTime = DateTime.Now;
         }
     }
