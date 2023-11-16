@@ -148,6 +148,7 @@ namespace API.Controllers {
         /// </summary>
         /// <param name="ID"></param>
         /// <param name="jwt"></param>
+        /// <param name="deleteHard">[false] true - completely remove from DB, false - mark entity as deleted</param>
         /// <returns></returns>
         [HttpDelete("DeleteCar/{ID}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -155,7 +156,7 @@ namespace API.Controllers {
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult DeleteCar([FromRoute] int ID, [FromHeader] string jwt) {
+        public IActionResult DeleteCar([FromRoute] int ID, [FromHeader] string jwt, [FromHeader] bool deleteHard = false) {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
                     _loggingService.Log("CarManagementController:DeleteCar: 401", Shared.Enums.EventTypes.ERROR);
@@ -165,7 +166,7 @@ namespace API.Controllers {
                     _loggingService.Log("CarManagementController:DeleteCar: 403", Shared.Enums.EventTypes.ERROR);
                     return new StatusCodeResult(StatusCodes.Status403Forbidden);
                 }
-                return Result.Pass(_carManagementService.DeleteCar(ID), "CarManagementController", "DeleteCar");
+                return Result.Pass(_carManagementService.DeleteCar(ID, deleteHard), "CarManagementController", "DeleteCar");
             } catch (Exception exc) {
                 _loggingService.Log(exc, "CarManagementController:DeleteCar");
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);

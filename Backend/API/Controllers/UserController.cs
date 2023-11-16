@@ -168,6 +168,7 @@ namespace API.Controllers {
         /// </summary>
         /// <param name="ID"></param>
         /// <param name="jwt"></param>
+        /// <param name="deleteHard">[false] true - completely remove from DB, false - mark entity as deleted</param>
         /// <returns></returns>
         [HttpDelete("DeleteUserByID/{ID}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -175,13 +176,13 @@ namespace API.Controllers {
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult DeleteUserByID([FromRoute] int ID, [FromHeader] string jwt) {
+        public IActionResult DeleteUserByID([FromRoute] int ID, [FromHeader] string jwt, [FromHeader] bool deleteHard = false) {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
                     _loggingService.Log("UserController:DeleteUserByID: 401", Shared.Enums.EventTypes.ERROR);
                     return new StatusCodeResult(StatusCodes.Status401Unauthorized);
                 }
-                return Result.Pass(_userService.RemoveUser(ID), "UserController", "DeleteUserByID");
+                return Result.Pass(_userService.RemoveUser(ID, deleteHard), "UserController", "DeleteUserByID");
             } catch (Exception exc) {
                 _loggingService.Log(exc, "UserController:DeleteUserByID");
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
@@ -193,6 +194,7 @@ namespace API.Controllers {
         /// </summary>
         /// <param name="email"></param>
         /// <param name="jwt"></param>
+        /// <param name="deleteHard">[false] true - completely remove from DB, false - mark entity as deleted</param>
         /// <returns></returns>
         [HttpDelete("DeleteUserByEmail/{email}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -200,13 +202,13 @@ namespace API.Controllers {
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult DeleteUserByEmail([FromRoute] string email, [FromHeader] string jwt) {
+        public IActionResult DeleteUserByEmail([FromRoute] string email, [FromHeader] string jwt, [FromHeader] bool deleteHard = false) {
             try {
                 if (!_authenticationService.IsValid(jwt)) {
                     _loggingService.Log("UserController:DeleteUserByEmail: 401", Shared.Enums.EventTypes.ERROR);
                     return new StatusCodeResult(StatusCodes.Status401Unauthorized);
                 }
-                return Result.Pass(_userService.RemoveUser(email), "UserController", "DeleteUserByEmail");
+                return Result.Pass(_userService.RemoveUser(email, deleteHard), "UserController", "DeleteUserByEmail");
             } catch (Exception exc) {
                 _loggingService.Log(exc, "UserController:DeleteUserByEmail");
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);

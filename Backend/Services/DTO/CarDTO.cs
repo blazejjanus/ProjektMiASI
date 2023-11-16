@@ -21,6 +21,8 @@ namespace Services.DTO {
         public string ShortDescription { get; set; }
         public string LongDescription { get; set; }
         public double PricePerDay { get; set; }
+        [DefaultValue(false)]
+        public bool IsDeleted { get; set; }
 
         public CarDTO() {
             Brand = string.Empty;
@@ -29,6 +31,7 @@ namespace Services.DTO {
             ShortDescription = string.Empty;
             LongDescription = string.Empty;
             IsOperational = true;
+            IsDeleted = false;
         }
     }
 }
