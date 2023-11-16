@@ -26,7 +26,7 @@ namespace Services.Services {
                 if(!context.Users.Any(x => x.ID == order.Customer.ID && !x.IsDeleted)) {
                     return new ObjectResult($"User with ID: {order.Customer.ID} cannot be found or is marked as deleted!") { StatusCode = StatusCodes.Status404NotFound };
                 }
-                if(!context.Cars.Any(x => x.ID == order.Car.ID && x.IsOperational)) {
+                if(!context.Cars.Any(x => x.ID == order.Car.ID && x.IsOperational && !x.IsDeleted)) {
                     return new ObjectResult($"Car with ID: {order.Car.ID} cannot be found or is not operational!") { StatusCode = StatusCodes.Status404NotFound };
                 }
                 if(order.CancelationTime != null) order.CancelationTime = null;
