@@ -21,7 +21,7 @@ namespace DB.DBO {
         [Required]
         public virtual bool IsOperational { get; set; }
         [Required]
-        public virtual DateTime ProductionDate { get; set; }
+        public virtual int ProductionYear { get; set; }
         [Required]
         public virtual double Horsepower { get; set; }
         [Required]

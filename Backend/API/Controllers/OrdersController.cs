@@ -87,7 +87,7 @@ namespace API.Controllers {
         /// <param name="userID"></param>
         /// <param name="jwt"></param>
         /// <returns></returns>
-        [HttpGet("GetUserOrders{userID}")]
+        [HttpGet("GetUserOrdersByID{userID}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -113,7 +113,7 @@ namespace API.Controllers {
         /// <param name="email"></param>
         /// <param name="jwt"></param>
         /// <returns></returns>
-        [HttpGet("GetUserOrders{email}")]
+        [HttpGet("GetUserOrdersByEmail{email}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -140,7 +140,7 @@ namespace API.Controllers {
         /// <param name="carID"></param>
         /// <param name="jwt"></param>
         /// <returns></returns>
-        [HttpGet("GetCarOrders{ID}")]
+        [HttpGet("GetCarOrdersByID{ID}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -166,7 +166,7 @@ namespace API.Controllers {
         /// <param name="registrationNumber"></param>
         /// <param name="jwt"></param>
         /// <returns></returns>
-        [HttpGet("GetCarOrders{registrationNumber}")]
+        [HttpGet("GetCarOrdersByRegNumber{registrationNumber}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]

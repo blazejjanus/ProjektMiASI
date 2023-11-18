@@ -12,7 +12,7 @@ namespace Services.DTO {
         public int SeatsNumber { get; set; }
         [DefaultValue(true)]
         public bool IsOperational { get; set; }
-        public DateTime ProductionDate { get; set; }
+        public int ProductionYear { get; set; }
         public double Horsepower { get; set; }
         public double EngineCapacity { get; set; }
         [DefaultValue(FuelTypes.Gasoline)]
