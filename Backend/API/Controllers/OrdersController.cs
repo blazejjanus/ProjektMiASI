@@ -98,7 +98,7 @@ namespace API.Controllers {
                 if (!_authenticationService.IsValid(jwt)) {
                     return Result.Pass(new StatusCodeResult(StatusCodes.Status401Unauthorized), GetType().Name, MethodBase.GetCurrentMethod()?.Name ?? "");
                 }
-                if (!_authenticationService.IsUser(jwt, userID) && !_authenticationService.IsHigherType(jwt, userID)) {
+                if (!_authenticationService.IsUser(jwt, userID) && !_authenticationService.IsHigherType(jwt, UserTypes.CUSTOMER)) {
                     return Result.Pass(new StatusCodeResult(StatusCodes.Status403Forbidden), GetType().Name, MethodBase.GetCurrentMethod()?.Name ?? "");
                 }
                 return Result.Pass(_orderService.GetUserOrders(userID), GetType().Name, MethodBase.GetCurrentMethod()?.Name ?? "");
@@ -124,7 +124,7 @@ namespace API.Controllers {
                 if (!_authenticationService.IsValid(jwt)) {
                     return Result.Pass(new StatusCodeResult(StatusCodes.Status401Unauthorized), GetType().Name, MethodBase.GetCurrentMethod()?.Name ?? "");
                 }
-                if (!_authenticationService.IsUser(jwt, email) && !_authenticationService.IsHigherType(jwt, email)) {
+                if (!_authenticationService.IsUser(jwt, email) && !_authenticationService.IsHigherType(jwt, UserTypes.CUSTOMER)) {
                     return Result.Pass(new StatusCodeResult(StatusCodes.Status403Forbidden), GetType().Name, MethodBase.GetCurrentMethod()?.Name ?? "");
                 }
                 return Result.Pass(_orderService.GetUserOrders(email), GetType().Name, MethodBase.GetCurrentMethod()?.Name ?? "");
