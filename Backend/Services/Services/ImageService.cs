@@ -41,9 +41,9 @@ namespace Services.Services {
                         } else {
                             images.AddRange(context.Images.Where(x => x.Car.ID == car.ID).ToList());
                         }
-                        List<string> results = new List<string>();
+                        var results = new Dictionary<int, string>();
                         foreach (var image in images) {
-                            results.Add(Convert.ToBase64String(image.Content));
+                            results.Add(image.ID, Convert.ToBase64String(image.Content));
                         }
                         return new ObjectResult(results) { StatusCode = 200 };
                     } else {
