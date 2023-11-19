@@ -81,8 +81,8 @@ namespace Services.Services {
 
         public IActionResult GetCarByID(int ID) {
             using (var context = new DataContext(Config)) {
-                if (context.Cars.Any(x => x.ID == ID)) {
-                    var dbo = context.Cars.Single(x => x.ID == ID);
+                if (context.Cars.Any(x => x.ID == ID && !x.IsDeleted)) {
+                    var dbo = context.Cars.Single(x => x.ID == ID && !x.IsDeleted);
                     return new ObjectResult(Mapper.Get().Map<CarDTO>(dbo)) { StatusCode = StatusCodes.Status200OK };
                 } else {
                     return new StatusCodeResult(StatusCodes.Status404NotFound);
@@ -92,8 +92,8 @@ namespace Services.Services {
 
         public IActionResult GetCarRegistrationNumber(string registrationNumber) {
             using (var context = new DataContext(Config)) {
-                if (context.Cars.Any(x => x.RegistrationNumber == registrationNumber)) {
-                    var dbo = context.Cars.Single(x => x.RegistrationNumber == registrationNumber);
+                if (context.Cars.Any(x => x.RegistrationNumber == registrationNumber && !x.IsDeleted)) {
+                    var dbo = context.Cars.Single(x => x.RegistrationNumber == registrationNumber && !x.IsDeleted);
                     return new ObjectResult(Mapper.Get().Map<CarDTO>(dbo)) { StatusCode = StatusCodes.Status200OK };
                 } else {
                     return new StatusCodeResult(StatusCodes.Status404NotFound);
@@ -105,11 +105,11 @@ namespace Services.Services {
             using(var context = new DataContext(Config)) {
                 if (!includeUnoperational) {
                     return new ObjectResult(Mapper.Get().Map<List<CarDTO>>(
-                        context.Cars.Where(x => x.IsOperational).ToList().Take(count ?? 100).Skip(startIndex ?? 0)
+                        context.Cars.Where(x => x.IsOperational && !x.IsDeleted).ToList().Take(count ?? 100).Skip(startIndex ?? 0)
                     )) { StatusCode = StatusCodes.Status200OK };
                 } else {
                     return new ObjectResult(Mapper.Get().Map<List<CarDTO>>(
-                        context.Cars.ToList().Take(count ?? 100).Skip(startIndex ?? 0)
+                        context.Cars.Where(x => !x.IsDeleted).ToList().Take(count ?? 100).Skip(startIndex ?? 0)
                     )) { StatusCode = StatusCodes.Status200OK };
                 }
             }
