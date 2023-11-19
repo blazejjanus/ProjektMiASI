@@ -64,6 +64,13 @@ namespace Services.Services {
                     dbo.Brand = car.Brand;
                     dbo.Model = car.Model;
                     dbo.IsOperational = car.IsOperational;
+                    dbo.ProductionYear = car.ProductionYear;
+                    dbo.Horsepower = car.Horsepower;
+                    dbo.EngineCapacity = car.EngineCapacity;
+                    dbo.FuelType = car.FuelType;
+                    dbo.ShortDescription = car.ShortDescription;
+                    dbo.LongDescription = car.LongDescription;
+                    dbo.PricePerDay = car.PricePerDay;
                     context.SaveChanges();
                     return new StatusCodeResult(StatusCodes.Status200OK);
                 } else {
