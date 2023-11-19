@@ -1,6 +1,4 @@
-﻿using Azure;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Services.DTO;
 using Services.Interfaces;
 using Shared.Enums;
@@ -87,7 +85,7 @@ namespace API.Controllers {
         /// <param name="userID"></param>
         /// <param name="jwt"></param>
         /// <returns></returns>
-        [HttpGet("GetUserOrdersByID{userID}")]
+        [HttpGet("GetUserOrdersByID/{userID}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -113,7 +111,7 @@ namespace API.Controllers {
         /// <param name="email"></param>
         /// <param name="jwt"></param>
         /// <returns></returns>
-        [HttpGet("GetUserOrdersByEmail{email}")]
+        [HttpGet("GetUserOrdersByEmail/{email}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -140,7 +138,7 @@ namespace API.Controllers {
         /// <param name="carID"></param>
         /// <param name="jwt"></param>
         /// <returns></returns>
-        [HttpGet("GetCarOrdersByID{ID}")]
+        [HttpGet("GetCarOrdersByID/{ID}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -166,7 +164,7 @@ namespace API.Controllers {
         /// <param name="registrationNumber"></param>
         /// <param name="jwt"></param>
         /// <returns></returns>
-        [HttpGet("GetCarOrdersByRegNumber{registrationNumber}")]
+        [HttpGet("GetCarOrdersByRegNumber/{registrationNumber}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -248,7 +246,7 @@ namespace API.Controllers {
         /// <param name="jwt"></param>
         /// <returns></returns>
         /// <exception cref="InvalidCastException"></exception>
-        [HttpPut("CancelOrder{orderID}")]
+        [HttpPut("CancelOrder/{orderID}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
