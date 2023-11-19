@@ -1,6 +1,5 @@
 ﻿using Shared.Enums;
 using System.ComponentModel;
-using System.Text.Json.Serialization;
 
 namespace Services.DTO {
     public class CarDTO {
@@ -16,7 +15,6 @@ namespace Services.DTO {
         public double Horsepower { get; set; }
         public double EngineCapacity { get; set; }
         [DefaultValue(FuelTypes.Gasoline)]
-        [JsonConverter(typeof(JsonStringEnumConverter))]
         public FuelTypes FuelType { get; set; }
         public string ShortDescription { get; set; }
         public string LongDescription { get; set; }
