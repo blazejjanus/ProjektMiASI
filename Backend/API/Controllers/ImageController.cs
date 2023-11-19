@@ -67,7 +67,7 @@ namespace API.Controllers {
         /// Add car iamge (only admin or employee)
         /// </summary>
         /// <param name="CarID"></param>
-        /// <param name="imageContent">Base64 encoded image content</param>
+        /// <param name="file">Base64 encoded image content</param>
         /// <param name="jwt"></param>
         /// <param name="isMain">[Optional] If the image is car's main image. Default null - if car has no images it will be main, true - main, false - not main</param>
         /// <returns></returns>
@@ -79,7 +79,7 @@ namespace API.Controllers {
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult AddCarImage([FromRoute] int CarID, [FromBody] string imageContent, [FromHeader] string jwt, [FromHeader] bool? isMain = null) {
+        public IActionResult AddCarImage([FromRoute] int CarID, [FromForm] IFormFile file, [FromHeader] string jwt, [FromHeader] bool? isMain = null) { 
             try {
                 if (!_authenticationService.IsValid(jwt)) {
                     _loggingService.Log("ImageController:AddCarImage: 401", Shared.Enums.EventTypes.ERROR);
@@ -88,6 +88,12 @@ namespace API.Controllers {
                 if (!_authenticationService.IsUserType(jwt, Shared.Enums.UserTypes.EMPLOYEE)) {
                     _loggingService.Log("ImageController:AddCarImage: 403", Shared.Enums.EventTypes.ERROR);
                     return new StatusCodeResult(StatusCodes.Status403Forbidden);
+                }
+                string imageContent;
+                using (var ms = new MemoryStream()) {
+                    file.CopyTo(ms);
+                    byte[] fileBytes = ms.ToArray();
+                    imageContent = Convert.ToBase64String(fileBytes);
                 }
                 return Result.Pass(_imageService.AddCarImage(CarID, imageContent, isMain), "ImageController", "AddCarImage");
             } catch (Exception exc) {
