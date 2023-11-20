@@ -33,7 +33,7 @@ namespace Services.Services {
                         ((order.RentStart >= x.RentStart && order.RentStart < x.RentEnd) ||
                          (order.RentEnd > x.RentStart && order.RentEnd <= x.RentEnd) ||
                          (order.RentStart <= x.RentStart && order.RentEnd >= x.RentEnd)))) {
-                    return new ObjectResult($"Car with ID: {order.Car.ID} is already reserved for the specified time period!") { StatusCode = StatusCodes.Status400BadRequest };
+                    return new ObjectResult($"Car with ID: {order.Car.ID} is already reserved for the specified time period!") { StatusCode = StatusCodes.Status409Conflict };
                 }
                 if (order.CancelationTime != null) order.CancelationTime = null;
                 var dbo = Mapper.Get().Map<OrderDBO>(order);
