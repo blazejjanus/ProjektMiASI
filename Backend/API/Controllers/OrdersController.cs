@@ -204,8 +204,8 @@ namespace API.Controllers {
                 if (!_authenticationService.IsValid(jwt)) {
                     return Result.Pass(new StatusCodeResult(StatusCodes.Status401Unauthorized), GetType().Name, MethodBase.GetCurrentMethod()?.Name ?? "");
                 }
-                if (!_authenticationService.IsUserType(jwt, UserTypes.EMPLOYEE)) {
-                    return Result.Pass(new StatusCodeResult(StatusCodes.Status403Forbidden), GetType().Name, MethodBase.GetCurrentMethod()?.Name ?? "", "Provided token is not a token of admin or employee.");
+                if (!_authenticationService.IsUser(jwt, order.Customer.ID) && !_authenticationService.IsHigherType(jwt, UserTypes.CUSTOMER)) {
+                    return Result.Pass(new StatusCodeResult(StatusCodes.Status403Forbidden), GetType().Name, MethodBase.GetCurrentMethod()?.Name ?? "");
                 }
                 return Result.Pass(_orderService.AddOrder(order), GetType().Name, MethodBase.GetCurrentMethod()?.Name ?? "");
             } catch (Exception exc) {
