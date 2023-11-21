@@ -27,6 +27,21 @@ namespace Shared.Validation {
             return false;
         }
 
+        public static string GetResponseString(IActionResult result) {
+            var text = "";
+            if (result is ObjectResult) {
+                text = ((ObjectResult)result).StatusCode.ToString() ?? "";
+                var message = ((ObjectResult)result).Value.ToString();
+                if(!string.IsNullOrEmpty(message)) {
+                    text += ": " + message;
+                }
+            }
+            if (result is StatusCodeResult) {
+                text = ((StatusCodeResult)result).StatusCode.ToString() ?? "";
+            }
+            return text;
+        }
+
         public static bool IsHttpResponseValid(IActionResult result) {
             if (result is ObjectResult)
                 return IsSuccess(((ObjectResult)result).StatusCode);

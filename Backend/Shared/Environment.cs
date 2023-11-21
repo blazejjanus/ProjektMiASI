@@ -14,6 +14,7 @@ namespace Shared {
             path = SplitPath(path, ".build");
             path = SplitPath(path, "bin");
             path = SplitPath(path, "API");
+            path = SplitPath(path, "Tests");
             path = SplitPath(path, "DB");
             path = SplitPath(path, "Shared");
             path = SplitPath(path, "Services");
