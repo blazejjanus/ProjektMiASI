@@ -2,6 +2,7 @@
 using DB.DBO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Services.DTO;
 using Services.Interfaces;
 using Services.Utils;
@@ -19,29 +20,37 @@ namespace Services.Services {
 
         public IActionResult AddOrder(OrderDTO order) {
             var validation = ValidateOrder(order);
-            if(validation != null) {
+            if (validation != null) {
                 return validation;
             }
-            using(var context = new DataContext(Config)) {
-                if(!context.Users.Any(x => x.ID == order.Customer.ID && !x.IsDeleted)) {
-                    return new ObjectResult($"User with ID: {order.Customer.ID} cannot be found or is marked as deleted!") { StatusCode = StatusCodes.Status404NotFound };
+            using (var context = new DataContext(Config)) {
+                using (var transaction = context.Database.BeginTransaction(System.Data.IsolationLevel.Serializable)) {
+                    try {
+                        if (!context.Users.Any(x => x.ID == order.Customer.ID && !x.IsDeleted)) {
+                            return new ObjectResult($"User with ID: {order.Customer.ID} cannot be found or is marked as deleted!") { StatusCode = StatusCodes.Status404NotFound };
+                        }
+                        if (!context.Cars.Any(x => x.ID == order.Car.ID && x.IsOperational && !x.IsDeleted)) {
+                            return new ObjectResult($"Car with ID: {order.Car.ID} cannot be found or is not operational!") { StatusCode = StatusCodes.Status404NotFound };
+                        }
+                        if (context.Orders.Any(x => x.Car.ID == order.Car.ID &&
+                                ((order.RentStart >= x.RentStart && order.RentStart < x.RentEnd) ||
+                                 (order.RentEnd > x.RentStart && order.RentEnd <= x.RentEnd) ||
+                                 (order.RentStart <= x.RentStart && order.RentEnd >= x.RentEnd)))) {
+                            return new ObjectResult($"Car with ID: {order.Car.ID} is already reserved for the specified time period!") { StatusCode = StatusCodes.Status409Conflict };
+                        }
+                        if (order.CancelationTime != null) order.CancelationTime = null;
+                        var dbo = Mapper.Get().Map<OrderDBO>(order);
+                        dbo.Customer = context.Users.First(x => x.ID == order.Customer.ID && !x.IsDeleted);
+                        dbo.Car = context.Cars.First(x => x.ID == order.Car.ID && x.IsOperational);
+                        context.Orders.Add(dbo);
+                        context.SaveChanges();
+                        transaction.Commit();
+                        return new StatusCodeResult(StatusCodes.Status201Created);
+                    } catch (Exception ex) {
+                        transaction.Rollback();
+                        return new ObjectResult($"An error occurred: {ex.Message}") { StatusCode = StatusCodes.Status500InternalServerError };
+                    }
                 }
-                if(!context.Cars.Any(x => x.ID == order.Car.ID && x.IsOperational && !x.IsDeleted)) {
-                    return new ObjectResult($"Car with ID: {order.Car.ID} cannot be found or is not operational!") { StatusCode = StatusCodes.Status404NotFound };
-                }
-                if(context.Orders.Any(x => x.Car.ID == order.Car.ID &&
-                        ((order.RentStart >= x.RentStart && order.RentStart < x.RentEnd) ||
-                         (order.RentEnd > x.RentStart && order.RentEnd <= x.RentEnd) ||
-                         (order.RentStart <= x.RentStart && order.RentEnd >= x.RentEnd)))) {
-                    return new ObjectResult($"Car with ID: {order.Car.ID} is already reserved for the specified time period!") { StatusCode = StatusCodes.Status409Conflict };
-                }
-                if (order.CancelationTime != null) order.CancelationTime = null;
-                var dbo = Mapper.Get().Map<OrderDBO>(order);
-                dbo.Customer = context.Users.First(x => x.ID == order.Customer.ID && !x.IsDeleted);
-                dbo.Car = context.Cars.First(x => x.ID == order.Car.ID && x.IsOperational);
-                context.Orders.Add(dbo);
-                context.SaveChanges();
-                return new StatusCodeResult(StatusCodes.Status201Created);
             }
         }
 
