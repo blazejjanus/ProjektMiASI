@@ -9,7 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\config.json" Link="config.json" />
+    <Content Include="..\config.json" Link="config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

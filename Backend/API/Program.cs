@@ -37,9 +37,10 @@ namespace API {
                 builder.Services.AddSwaggerGen();
                 var app = builder.Build();
                 // Configure the HTTP request pipeline.
-                if (app.Environment.IsDevelopment()) {
+                if (app.Environment.IsDevelopment() || config.IsDevelopmentEnvironment) {
                     app.UseSwagger();
                     app.UseSwaggerUI();
+                    Console.WriteLine($"Swagger is enabled.\n\tAvaliable on: /swagger/index.html");
                 }
                 app.UseHttpsRedirection();
                 app.UseAuthorization();
