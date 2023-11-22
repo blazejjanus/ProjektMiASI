@@ -138,7 +138,7 @@ namespace API.Controllers {
         /// <param name="carID"></param>
         /// <param name="jwt"></param>
         /// <returns></returns>
-        [HttpGet("GetCarOrdersByID/{ID}")]
+        [HttpGet("GetCarOrdersByID/{carID}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
